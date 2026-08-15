@@ -1,0 +1,142 @@
+/ts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/pinctrl/am33xx.h>
+
+&{/chosen} {
+    overlays {
+        BBG-ION-0.kernel = __TIMESTAMP__;
+    };
+};
+
+&ocp {
+     //Disabling multiplexing for GPIO pins
+     P9_12_pinmux { status = "disabled"; };
+     P9_14_pinmux { status = "disabled"; };
+     P9_15_pinmux { status = "disabled"; };
+     P9_16_pinmux { status = "disabled"; };
+     P9_17_pinmux { status = "disabled"; };
+     P9_18_pinmux { status = "disabled"; };
+     P9_22_pinmux { status = "disabled"; };
+     P9_24_pinmux { status = "disabled"; };
+     P9_26_pinmux { status = "disabled"; };
+     P9_28_pinmux { status = "disabled"; };
+
+     P8_9_pinmux { status = "disabled"; };
+     P8_10_pinmux { status = "disabled"; };
+     P8_12_pinmux { status = "disabled"; };
+     P8_13_pinmux { status = "disabled"; };
+     P8_14_pinmux { status = "disabled"; };
+     P8_15_pinmux { status = "disabled"; };
+     P8_16_pinmux { status = "disabled"; };
+     P8_17_pinmux { status = "disabled"; };
+     P8_21_pinmux { status = "disabled"; };
+     P8_23_pinmux { status = "disabled"; };
+     P8_25_pinmux { status = "disabled"; };
+     P8_27_pinmux { status = "disabled"; };
+     P8_29_pinmux { status = "disabled"; };
+     P8_31_pinmux { status = "disabled"; };
+     P8_33_pinmux { status = "disabled"; };
+     P8_35_pinmux { status = "disabled"; };
+     P8_37_pinmux { status = "disabled"; };
+     P8_38_pinmux { status = "disabled"; };
+     P8_39_pinmux { status = "disabled"; };
+     P8_40_pinmux { status = "disabled"; };
+     P8_41_pinmux { status = "disabled"; };
+     P8_42_pinmux { status = "disabled"; };
+     P8_43_pinmux { status = "disabled"; };
+     P8_44_pinmux { status = "disabled"; };
+     P8_46_pinmux { status = "disabled"; };
+};
+
+&am33xx_pinmux {
+    BBG_ION_0_PINS: pinmux_bbg_io_pins {
+        pinctrl-single,pins = <
+            0x09c (PIN_INPUT_PULLUP | MUX_MODE7) /*P8_9*/
+            0x098 (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P8_10*/
+            0x030 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_12*/
+            0x024 (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P8_13*/
+            0x028 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_14*/
+            0x03c (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P8_15*/
+            0x038 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_16*/
+            0x02c (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_17*/
+            0x080 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_21*/
+            0x010 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_23*/
+            0x000 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_25*/
+            0x0e0 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_27*/
+            0x0e4 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_29*/
+            0x0d8 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_31*/
+            0x0d4 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_33*/
+            0x0d0 (PIN_INPUT | MUX_MODE7) /*P8_35*/
+            0x0c0 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_37*/
+            0x0c4 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_38*/
+            0x0b8 (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P8_39*/
+            0x0bc (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_40*/
+            0x0b0 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_41*/
+            0x0b4 (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P8_42*/
+            0x0a8 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_43*/
+            0x0ac (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P8_44*/
+            0x0a4 (PIN_OUTPUT | MUX_MODE3) /*P8_46*/
+            0x078 (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P9_12*/
+            0x048 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P9_14*/
+            0x040 (PIN_OUTPUT_PULLDOWN | MUX_MODE7 /*P9_15*/
+            0x04c (PIN_OUPPUT | MUX_MODE6) /*P9_16*/
+            0x15c (SLEWCTRL_SLOW | PIN_INPUT_PULLUP | MUX_MODE2) /*P9_17*/
+            0x158 (SLEWCTRL_SLOW | PIN_INPUT_PULLUP | MUX_MODE2) /*P9_18*/
+            0x150 (PIN_OUTPUT | MUX_MODE3) /*P9_22*/
+            0x184 (PIN_INPUT_PULLUP | MUX_MODE2) /*P9_24*/
+            0x180 (PIN_OUTPUT_PULLUP _ MUX_MODE2) /*P9_26*/
+            0x19c (PIN_INPUT | MUX_MODE4) /*P9_28*/
+        >;
+    };
+};
+
+&dcan1 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&bb_dcan1_pins>;
+};
+
+&i2c1 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&bb_i2c1_pins>;
+
+	clock-frequency = <400000>;
+};
+
+&epwmss2 {
+	status = "okay";
+};
+
+&ehrpwm2 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&epwmss2_pins>;
+};
+
+&epwmss1 {
+	status = "okay";
+};
+
+&ehrpwm1 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&epwmss1_pins>;
+};
+
+&epwmss0 {
+	status = "okay";
+};
+
+&ehrpwm0 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&epwmss0_pins>;
+};
+
+&bone_adc {
+	status = "okay"; /* enable for A0, A1, A2*/
+};
+
