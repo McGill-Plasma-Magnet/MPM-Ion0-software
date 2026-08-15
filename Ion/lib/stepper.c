@@ -3,7 +3,7 @@
 
 struct timespec delay = {
     .tv_sec = 0,
-    .tv_nsec = 300000000
+    .tv_nsec = 400000
 };
 
 static struct gpiod_chip *chip;
@@ -17,8 +17,8 @@ static struct gpiod_line *stpSTEP;
 static struct gpiod_line *stpDIR;
 
 //gpiochip2 
-// [MS0, MS1, MS2, RST, SLP, EN]
-const int statepin[7] = {0, 0, 0, 1, 0, 1, 0};
+// [MS0, MS1, MS2, RST, SLP, EN, DIR]
+const int statepin[7] = {0, 0, 0, 1, 1, 0, 0};
 int initStp(const int pin[7]) {
 
     chip = gpiod_chip_open("/dev/gpiochip2");
@@ -51,6 +51,7 @@ void driveStp() {
     gpiod_line_set_value(stpSTEP, 1);
     nanosleep(&delay, NULL);
     gpiod_line_set_value(stpSTEP, 0);
+    nanosleep(&delay, NULL);
 }
 void stpSWDir() {
     int dir = gpiod_line_get_value(stpDIR);

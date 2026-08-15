@@ -1,33 +1,7 @@
-#include <stdlib.h>  
-#include <stdio.h>  
-#include <string.h>  
-#include <unistd.h>     //close()  
-#include <fcntl.h>     //define O_WONLY and O_RDONLY  
-#include <math.h>
-#define MAX_BUF 64     //This is plenty large  
-
-//Function declarations  
-float readTMP(unsigned int pin);  
-
-//main program  
-int main()  
-{  
-    //Read ADCs  
-    float adc0 = readTMP(0);  
-    float adc1 = readTMP(1);  
-    float adc2 = readTMP(2);  
-
-    //Print ADC readings  
-    printf("ADC 0: %f\n",adc0);  
-    printf("ADC 1: %f\n",adc1);  
-    printf("ADC 2: %f\n",adc2);  
-
-
-    return 0;  
-}//end main  
+#include <thermistor.h>
 
 //Function definitions  
-float readTMP(unsigned int pin)  
+double readTMP(unsigned int pin)  
 {  
     int fd;          //file pointer  
     char buf[MAX_BUF];     //file buffer  
@@ -44,7 +18,7 @@ float readTMP(unsigned int pin)
         perror("ADC - problem opening ADC");  
     }//end if  
 
-    read(fd, &val, 4);     //read ADC ing val (up to 4 digits 0-1799)  
+    read(fd, &val, 4);     //read ADC ing val (up to 4 digits 0-4093)  
     close(fd);     //close file and stop reading  
 
     //calculating temprature
