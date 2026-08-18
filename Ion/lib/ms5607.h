@@ -25,9 +25,9 @@ char readDigitalValue();
 //Internel functions
 char resetDevice(void);
 char readCalibration();
-char readUInt_16(uint8_t address, uint16_t &value);
+char readUInt_16(uint8_t address, uint16_t *value);
 char readBytes(unsigned char *values, int length);
 char startConversion(char CMD);
 char startMeasurment(void);
-char getDigitalValue(uint64_t &value);
+char getDigitalValue(uint64_t *value);
 

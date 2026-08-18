@@ -1,4 +1,4 @@
-#include <ms5607.h>
+#include "ms5607.h"
 
 static const float P0 = 1011.25;
 static short OSR = 4096; //default and highest resolution config
@@ -67,16 +67,16 @@ char readCalibration()
     }else {return 0;}
 }
 
-char readUInt_16(uint8_t address, uint16_t &value)
+char readUInt_16(uint8_t address, uint16_t *value)
 {
     unsigned char data[2];
     data[0] = address;
     if (readBytes(data,2))
     {
-        value = (((uint16_t)data[0]*(1<<8))|(uint16_t)data[1]);
+        *value = (((uint16_t)data[0]*(1<<8))|(uint16_t)data[1]);
 		return(1);
     }
-    value = 0;
+    *value = 0;
     return 0;
 }
 
@@ -90,7 +90,7 @@ char readBytes( unsigned char *values, int length)
         perror("failled to send command");
         return 0;
     }
-    if (read(file, values, length) != length)
+    if (read(file, &values, length) != length)
     {
         perror("could not read data");
         return 0;
@@ -142,7 +142,7 @@ char readDigitalValue()
 
     return 1;
 }
-char getDigitalValue(uint64_t &value)
+char getDigitalValue(uint64_t *value)
 {
     char x, length =3;
     unsigned char data[3];
@@ -151,7 +151,7 @@ char getDigitalValue(uint64_t &value)
         perror("failed to read data from file");
         return 0;
     }
-    value = (uint64_t)data[0]*1<<16|(uint64_t)data[1]*1<<8|(uint64_t)data[2];
+    *value = (uint64_t)data[0]*1<<16|(uint64_t)data[1]*1<<8|(uint64_t)data[2];
     close(file);
     return 1;
 }
