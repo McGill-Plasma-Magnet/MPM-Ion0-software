@@ -31,8 +31,8 @@ int main(void)
             continue;
         }
 
-        float temperature = readtemphdc();
-        float humidity = readhumidity();
+        float temperature = readTempHDC();
+        float humidity = readHumidity();
 
         printf("temperature: %.2f c | humidity: %.2f %%rh\n",
                temperature, humidity);
@@ -45,10 +45,11 @@ int main(void)
     if (!startmeasurementhdc()) {
         fprintf(stderr, "measurement failed\n");
         sleep(1);
+        continue;
     }
 
-    float temperature = readtemphdc();
-    float humidity = readhumidity();
+    float temperature = readTempHDC();
+    float humidity = readHumidity();
 
     printf("temperature: %.2f c | humidity: %.2f %%rh\n",
             temperature, humidity);
