@@ -45,7 +45,6 @@ int main(void)
     if (!startmeasurementhdc()) {
         fprintf(stderr, "measurement failed\n");
         sleep(1);
-        continue;
     }
 
     float temperature = readTempHDC();
