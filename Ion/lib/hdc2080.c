@@ -225,7 +225,7 @@ float readHumidity ()
 }
 int heaterEN (int time )
 {
-    heat_delay.tv_nsec = time * 1000000L;
+    heat_delay.tv_nsec = time * 1000000000L;
     if (!hdcBegin()) return 0;
     
     config[1] = config[1] | 0x08;
@@ -245,6 +245,7 @@ int heaterEN (int time )
     temp = readTempHDC();
     printf("temprature is %f\n", temp);
 
+    if (!hdcBegin()) return 0;
     config[1] = config[1] ^ 0x08;
     if (write(file, &config, 2) != 2)
     {
