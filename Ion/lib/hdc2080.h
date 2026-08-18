@@ -23,7 +23,7 @@
 
 #define MODE 0x50 //set measure frequency to 1Hz
 #define RESOLUTION 0x00 //14 bit res and measure temp + humidity
-#define NUM_OF_POLLING_LOOPS 5
+#define NUM_OF_POLLING_LOOPS 10
 
 char hdcBegin();
 int initHDC(); //write wanted default configuration to register
