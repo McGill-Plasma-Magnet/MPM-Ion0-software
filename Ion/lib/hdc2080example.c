@@ -25,21 +25,35 @@ int main(void)
     for (int i = 0; i < 10; i++) {
 
         /* Must happen BEFORE readTempHDC()/readHumidity() */
-        if (!startMeasurementHDC()) {
-            fprintf(stderr, "Measurement failed\n");
+        if (!startmeasurementhdc()) {
+            fprintf(stderr, "measurement failed\n");
             sleep(1);
             continue;
         }
 
-        float temperature = readTempHDC();
-        float humidity = readHumidity();
+        float temperature = readtemphdc();
+        float humidity = readhumidity();
 
-        printf("Temperature: %.2f C | Humidity: %.2f %%RH\n",
+        printf("temperature: %.2f c | humidity: %.2f %%rh\n",
                temperature, humidity);
 
     }
     printf("testind heater\n");
-    heaterEN(1000);
+    heaterEN(5);
+    printf("heater should be off, waiting 10s to cool down");
+    sleep(10);
+    if (!startmeasurementhdc()) {
+        fprintf(stderr, "measurement failed\n");
+        sleep(1);
+        continue;
+    }
+
+    float temperature = readtemphdc();
+    float humidity = readhumidity();
+
+    printf("temperature: %.2f c | humidity: %.2f %%rh\n",
+            temperature, humidity);
+
 
     return 0;
 }
