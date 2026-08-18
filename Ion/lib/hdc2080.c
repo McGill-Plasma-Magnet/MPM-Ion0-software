@@ -229,7 +229,7 @@ int heaterEN (int time )
     if (!hdcBegin()) return 0;
     
     config[1] = config[1] | 0x08;
-    if (write(file, &config, 2) != 1)
+    if (write(file, &config, 2) != 2)
     {
         perror("failed to enable heater");
         close(file);
