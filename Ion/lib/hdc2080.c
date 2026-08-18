@@ -35,14 +35,14 @@ int initHDC ()
 {
     if (!hdcBegin()) return 0;
 
-    if (write(file, &config, 2) != 1)
+    if (write(file, &config, 2) != 2)
     {
         perror("failed to write config register");
         close(file);
         return 0;
     }
 
-    if (write(file, &measure, 2) != 1)
+    if (write(file, &measure, 2) != 2)
     {
         perror("failed to write measure register");
         close(file);
@@ -58,7 +58,7 @@ int hdcRST ()
     if (!hdcBegin()) return 0;
 
     config[1] = 0x80;
-    if (write(file, &config, 2) != 1)
+    if (write(file, &config, 2) != 2)
     {
         perror("failed to soft reset sensor");
         close(file);
@@ -75,7 +75,7 @@ int setMODE(char byte)
     config[1] = config[1] & 0x0F; //reset mode only 
     config[1] = config[1] | byte; //this assumes the user puts a valid mode in format 0b0xxx0000
 
-    if (write(file, &config, 2) != 1)
+    if (write(file, &config, 2) != 2)
     {
         perror("failed to set mode");
         close(file);
@@ -90,7 +90,7 @@ int setResolution(char byte)
     if (!hdcBegin()) return 0;
     
     measure[1] = byte;
-    if (write(file, &measure, 2) != 1)
+    if (write(file, &measure, 2) != 2)
     {
         perror("failed to set resolution");
         close(file);
@@ -106,7 +106,7 @@ int startMeasurementHDC ()
     if (!hdcBegin()) return 0;
 
     measure[1] = measure[1] | 0x01;
-    if (write(file, &measure, 2) != 1)
+    if (write(file, &measure, 2) != 2)
     {
         perror("failed to trigger measurement");
         close(file);
@@ -175,7 +175,7 @@ float readTempHDC()
     }
     close(file);
     uint16_t rawTemp = ((uint16_t)tempmsb << 8) | templsb;
-    float temp = ((rawTemp/65536)*165 - 40.62f);
+    float temp = ((rawTemp/65536.0f)*165 - 40.62f);
     return temp;
 }
 
@@ -188,7 +188,7 @@ float readHumidity ()
     char humiditylsb = HUMIDITY_LSB;
     char humiditymsb = HUMIDITY_MSB;
 
-    if (write(file, humiditylsb, 1) != 1)
+    if (write(file, &humiditylsb, 1) != 1)
     {
         perror("failed to write humidity lsb register");
         close(file);
@@ -214,7 +214,7 @@ float readHumidity ()
     }
     close(file);
     uint16_t rawHumidity = ((uint16_t)humiditymsb << 8) | humiditylsb;
-    float humidity = ((rawHumidity/65536)*100.0f);
+    float humidity = ((rawHumidity/65536.0f)*100.0f);
     return humidity;
 }
 int heaterEN (int time )
@@ -231,7 +231,7 @@ int heaterEN (int time )
     }
     close(file);
 
-    int startMeasurementHDC();
+    startMeasurementHDC();
     float temp = readTempHDC();
     printf("temprature is %f\n", temp);
     nanosleep(&heat_delay, NULL);
@@ -240,7 +240,7 @@ int heaterEN (int time )
     printf("temprature is %f\n", temp);
 
     config[1] = config[1] ^ 0x08;
-    if (write(file, &config, 2) != 1)
+    if (write(file, &config, 2) != 2)
     {
         perror("failed to disable heater");
         close(file);
