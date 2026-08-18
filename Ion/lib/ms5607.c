@@ -142,7 +142,7 @@ char readDigitalValue()
 
     return 1;
 }
-char getDigitalValue(uint64_t *value)
+char getDigitalValue(uint32_t *value)
 {
     char x, length =3;
     unsigned char data[3];
