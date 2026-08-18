@@ -84,7 +84,7 @@ char readBytes( unsigned char *values, int length)
 {
     if (!msBegin()) return 0;
     
-    if (write(file, values[0], 1) != 1) 
+    if (write(file, *values[0], 1) != 1) 
     {
         perror("failled to send command");
         return 0;
