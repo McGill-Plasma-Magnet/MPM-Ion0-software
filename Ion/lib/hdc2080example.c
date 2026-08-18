@@ -25,7 +25,7 @@ int main(void)
     for (int i = 0; i < 10; i++) {
 
         /* Must happen BEFORE readTempHDC()/readHumidity() */
-        if (!startmeasurementhdc()) {
+        if (!startMeasurementHDC()) {
             fprintf(stderr, "measurement failed\n");
             sleep(1);
             continue;
@@ -42,7 +42,7 @@ int main(void)
     heaterEN(5);
     printf("heater should be off, waiting 10s to cool down");
     sleep(10);
-    if (!startmeasurementhdc()) {
+    if (!startMeasurementHDC()) {
         fprintf(stderr, "measurement failed\n");
         sleep(1);
     }
