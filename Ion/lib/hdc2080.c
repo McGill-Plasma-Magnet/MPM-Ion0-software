@@ -143,7 +143,7 @@ int startMeasurementHDC ()
     perror("Conversion was not completed"); */
     nanosleep( &conv_delay, NULL);
     close(file);
-    return 0;
+    return 1;
 }
 
 float readTempHDC()
