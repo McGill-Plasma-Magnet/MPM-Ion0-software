@@ -82,10 +82,9 @@ char readUInt_16(uint8_t address, uint16_t *value)
 
 char readBytes( unsigned char *values, int length)
 {
-    char x;
     if (!msBegin()) return 0;
     
-    if (write(file, &values[0], 1) != 1) 
+    if (write(file, values[0], 1) != 1) 
     {
         perror("failled to send command");
         return 0;
@@ -120,7 +119,6 @@ char startMeasurment(void)
         perror("failed to read ADC");
         return 0;
     }
-    nanosleep(&conv_delay, NULL);
     return 1;
 }
 
@@ -144,7 +142,7 @@ char readDigitalValue()
 }
 char getDigitalValue(uint32_t *value)
 {
-    char x, length =3;
+    char length =3;
     unsigned char data[3];
     if (read(file, data, length) != length)
     {
