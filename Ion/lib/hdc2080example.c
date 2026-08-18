@@ -22,7 +22,7 @@ int main(void)
         return 1;
     }
 
-    while (1) {
+    for (int i = 0; i < 10; i++) {
 
         /* Must happen BEFORE readTempHDC()/readHumidity() */
         if (!startMeasurementHDC()) {
@@ -37,8 +37,9 @@ int main(void)
         printf("Temperature: %.2f C | Humidity: %.2f %%RH\n",
                temperature, humidity);
 
-        sleep(1);
     }
+    printf("testind heater\n");
+    heaterEN(1000);
 
     return 0;
 }
