@@ -213,14 +213,23 @@ static void calculateCompensation(void)
 
 float getTemprature()
 {
-    calculateCompensation();
+    dT = (float)DT - ((float)C5)*((int)1<<8);
+    TEMP = 2000.0 + dT * ((float)C6)/(float)((long)1<<23);
     return TEMP/100 ;
 }
     
 
 float getPressure(void)
 {
-    calculateCompensation();
+    dT = (float)DT - ((float)C5)*((int)1<<8);
+    TEMP = 2000.0 + dT * ((float)C6)/(float)((long)1<<23);
+    OFF = (((int64_t)C2)*((long)1<<17)) + dT * ((float)C4)/((int)1<<6);
+    SENS = ((float)C1)*((long)1<<16) + dT * ((float)C3)/((int)1<<7);
+    float pa = (float)((float)DP/((long)1<<15));
+    float pb = (float)(SENS/((float)((long)1<<21)));
+    float pc = pa*pb;
+    float pd = (float)(OFF/((float)((long)1<<15)));
+    P = pc - pd;
     return P/100;
 }
 

@@ -30,4 +30,4 @@ char readBytes(unsigned char *values, int length);
 char startConversion(char CMD);
 char startMeasurment(void);
 char getDigitalValue(uint32_t *value);
-
+static void calculateCompensation(void);
