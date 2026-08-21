@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <gpiod.h>
 #include <unistd.h>
+#include <time.h>
 
 //set inital state of the stepper based on array values
 // [MS0, MS1, MS2, RST, SLP, EN, DIR]

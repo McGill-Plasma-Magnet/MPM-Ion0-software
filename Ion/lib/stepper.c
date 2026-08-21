@@ -1,7 +1,9 @@
 #include <stepper.h>
-#include <time.h>
 
-struct timespec delay = {
+sstruct timespec delay = {
+    .tv_sec = 0,
+    .tv_nsec = 400000
+};truct timespec delay = {
     .tv_sec = 0,
     .tv_nsec = 400000
 };

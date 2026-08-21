@@ -40,7 +40,7 @@ int main(void)
     }
     printf("testind heater\n");
     heaterEN(5);
-    printf("heater should be off, waiting 10s to cool down");
+    printf("heater should be off, waiting 10s to cool down\n");
     sleep(10);
     if (!startMeasurementHDC()) {
         fprintf(stderr, "measurement failed\n");
