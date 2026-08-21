@@ -8,7 +8,11 @@ struct timespec delay = {
 
 int main()
 {
-    initMotor2();
+    if (initMotor2())
+    {
+        perror("error initialising motor 2");
+    }
+
     while(1)
     {
         motor2ON(1);
