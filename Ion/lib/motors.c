@@ -109,7 +109,7 @@ void motor2ON(int dir)
     {
         case 0:
             gpiod_line_set_value(motor2a, 1);
-            gpiod_line_set_value(motor2b, 0);
+            gpiod_line_set_value(motor2b, 1);
             break;
         case 1:
             gpiod_line_set_value(motor2a, 0);

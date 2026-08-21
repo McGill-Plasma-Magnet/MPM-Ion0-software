@@ -15,7 +15,7 @@ int main()
 
     while(1)
     {
-        motor2ON(1);
+        motor2ON(0);
         sleep(5);
         motor2OFF();
         sleep(5);
