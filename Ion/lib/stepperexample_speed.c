@@ -46,7 +46,7 @@ int main(void)
 
     printf("Stepper test finished.\n");
 
-    endStepper();
+    endStepper(initial_state);
 
     return 0;
 }

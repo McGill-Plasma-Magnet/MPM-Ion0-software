@@ -79,7 +79,7 @@ void setSpeed(char speed)
     gpiod_line_set_value(ms2, speed & 1);
 }
 
-void endStepper()
+void endStepper(const int pin[7])
 {
     if (ms0)
     {
