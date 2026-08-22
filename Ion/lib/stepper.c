@@ -130,9 +130,9 @@ void endStepper(const int pin[7])
         gpiod_line_release(stpSTEP);
         stpSTEP = NULL;
     }
-    if (chip2)
+    if (chip)
     {
-        gpiod_chip_close(chip2);
-        chip2 = NULL;
+        gpiod_chip_close(chip);
+        chip = NULL;
     }
 }
