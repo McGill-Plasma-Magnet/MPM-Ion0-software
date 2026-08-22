@@ -74,9 +74,9 @@ void extrudeTape(int steps) {
 }
 void setSpeed(char speed)
 {
-    gpiod_line_set_value(ms0, (speed >> 2) & 1);
+    gpiod_line_set_value(ms2, (speed >> 2) & 1);
     gpiod_line_set_value(ms1, (speed >> 1) & 1);
-    gpiod_line_set_value(ms2, speed & 1);
+    gpiod_line_set_value(ms0, speed & 1);
 }
 
 void endStepper(const int pin[7])
