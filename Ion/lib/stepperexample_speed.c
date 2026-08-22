@@ -48,7 +48,7 @@ int main(void)
         sleep(1);
     }
 
-    endStepper();
+    endStepper(initial_state);
 
     return 0;
 }
