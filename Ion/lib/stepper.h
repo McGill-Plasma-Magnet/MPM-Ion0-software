@@ -12,6 +12,8 @@ void stpSWDir();
 void stpSetSlp(int sleep);
 void stpSlp(int time);
 void extrudeTape(int steps);
+void setSpeed(char speed);
+void endStepper();
 
 
 

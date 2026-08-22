@@ -1,9 +1,6 @@
 #include <stepper.h>
 
-sstruct timespec delay = {
-    .tv_sec = 0,
-    .tv_nsec = 400000
-};truct timespec delay = {
+struct timespec delay = {
     .tv_sec = 0,
     .tv_nsec = 400000
 };
@@ -73,5 +70,69 @@ void extrudeTape(int steps) {
     while (steps > 0) {
         driveStp();
         --steps;
+    }
+}
+void setSpeed(char speed)
+{
+    gpiod_line_set_value(ms0, (speed >> 2) & 1);
+    gpiod_line_set_value(ms1, (speed >> 1) & 1);
+    gpiod_line_set_value(ms2, speed & 1);
+}
+
+void endStepper()
+{
+    if (ms0)
+    {
+        gpiod_line_set_value(ms0, pin[0]);
+        gpiod_line_release(ms0);
+        ms0 = NULL;
+    }
+    if (ms1)
+    {
+        gpiod_line_set_value(ms1, pin[1]);
+        gpiod_line_release(ms1);
+        ms1 = NULL;
+    }
+    if (ms2)
+    {
+        gpiod_line_set_value(ms2, pin[0]);
+        gpiod_line_release(ms2);
+        ms2 = NULL;
+    }
+
+    if (stpRST)
+    {
+        gpiod_line_set_value(stpRST,pin[3]);
+        gpiod_line_release(stpRST);
+        stpRST = NULL;
+    }
+    if (stpSLP)
+    {
+        gpiod_line_set_value(stpSLP,pin[4]);
+        gpiod_line_release(stpRST);
+        stpSLP = NULL;
+    }
+    if (stpEN)
+    {
+        gpiod_line_set_value(stpEN,pin[5]);
+        gpiod_line_release(stpEN);
+        stpEN = NULL;
+    }
+    if (stpDIR)
+    {
+        gpiod_line_set_value(stpDIR,pin[6]);
+        gpiod_line_release(stpDIR);
+        stpDIR = NULL;
+    }
+    if (stpSTEP)
+    {
+        gpiod_line_set_value(stpSTEP,pin[6]);
+        gpiod_line_release(stpSTEP);
+        stpSTEP = NULL;
+    }
+    if (chip2)
+    {
+        gpiod_chip_close(chip2);
+        chip2 = NULL;
     }
 }
