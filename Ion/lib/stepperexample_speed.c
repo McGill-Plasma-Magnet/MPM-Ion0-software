@@ -8,9 +8,9 @@ int main(void)
 
     const char speeds[] = {
         0b000, // Full step
-        0b100, // Half step
+        0b001, // Half step
         0b010, // Quarter step
-        0b110, // Eighth step
+        0b011, // Eighth step
         0b111  // Sixteenth step
     };
 
