@@ -65,9 +65,9 @@ int main(void)
      */
     const char speeds[5] = {
         0b111,
-        0b011,
+        0b110,
         0b010,
-        0b001,
+        0b100,
         0b000
     };
 
