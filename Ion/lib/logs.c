@@ -4,7 +4,7 @@ static int file;
 static int initialized = 0;
 static char dataBuffer[DATA_BUF];
 static size_t bufferLen = 0;
-static int chunkSize = 820;
+static unsigned int chunkSize = 820;
 
 
 char setupLogs()
@@ -15,7 +15,7 @@ char setupLogs()
         return 1;
     }
     char initMessage[] = "ION 0 FLIGHT LOGS!\n time, pressure, ms5607 temp, hdc humidity, hdc temp, prob 1 temp, prob 2 temp, prob 3 temp";
-    if (!write(file, *initMessage, sizeof(initMessage)))
+    if (!write(file, initMessage, sizeof(initMessage)))
     {
         perror("failed to write init message");
         return 1;
