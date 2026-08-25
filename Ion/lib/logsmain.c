@@ -26,21 +26,21 @@ int main(void)
      * today. */
     if (!createFile())
     {
-        fprintf(stderr, "createFile() failed, aborting test\n");
+        fprintf(stderr, "createFile() failed, exiting\n");
         return EXIT_FAILURE;
     }
 
     /* setupLogs(), like the rest of logs.c, returns 0 on success. */
     if (setupLogs() != 0)
     {
-        fprintf(stderr, "setupLogs() failed, aborting test\n");
+        fprintf(stderr, "setupLogs() failed, exiting\n");
         return EXIT_FAILURE;
     }
 
-    logMessage("logsexample: starting test run");
+    logMessage("Starting logging");
 
-    int i;
-    for (i = 0; i < NUM_READINGS && keepRunning; i++)
+    int i = 0;
+    for (;;)
     {
         if (logData() != 0)
         {
@@ -51,11 +51,11 @@ int main(void)
             printf("Logged reading %d\n", i);
         }
         sleep(READING_INTERVAL_SEC);
+        i++;
     }
 
-    logMessage("logsexample: ending test run");
+    //dead code but why not if something bad happens
+    logMessage("something bad happened");
     flushClose();
-
-    printf("Done. Attempted %d readings, files written under %s\n", i, DIR_PATH);
     return EXIT_SUCCESS;
 }

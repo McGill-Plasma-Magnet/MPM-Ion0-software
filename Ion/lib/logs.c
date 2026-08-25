@@ -14,7 +14,7 @@ char setupLogs()
         perror("unable to locate file");
         return 1;
     }
-    char initMessage[] = "ION 0 FLIGHT LOGS!\n time, pressure, ms5607 temp, hdc humidity, hdc temp, prob 1 temp, prob 2 temp, prob 3 temp";
+    char initMessage[] = "ION 0 FLIGHT LOGS!\n time, pressure, ms5607 temp, hdc humidity, hdc temp, prob 1 temp, prob 2 temp, prob 3 temp\n";
     if (!write(file, initMessage, sizeof(initMessage)))
     {
         perror("failed to write init message");
