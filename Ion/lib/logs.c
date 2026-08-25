@@ -130,7 +130,7 @@ char logData()
         bufferLen = 0;
         return 1;
     }
-    return 1;
+    return 0;
 }
 
     
@@ -165,7 +165,7 @@ char logMessage(const char* message)
         bufferLen = 0;
         return 1;
     }
-    return 1;
+    return 0;
 }
 
 char flushBuffer()
@@ -177,10 +177,10 @@ char flushBuffer()
         fsync(file);
     }
     else{
-        return 0;
+        return 1;
     }
     bufferLen = 0;
-    return 1;
+    return 0;
 }
 
 void flushClose()
