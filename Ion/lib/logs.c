@@ -29,6 +29,15 @@ char setupLogs()
         fprintf(stderr, "Failed to initialize HDC2080\n");
         return 1;
     }
+       /* Read factory calibration coefficients after reset. */
+    if (!readCalibration()) {
+        fprintf(stderr, "MS5607 calibration read failed\n");
+        return 1;
+    }
+
+    /* Highest resolution. Try 256, 512, 1024, 2048, or 4096. */
+    setOSR(4096);
+
     initialized = 1;
     return 0;
 }
