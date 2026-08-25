@@ -91,9 +91,9 @@ char logData()
 
     humidity = readHumidity();
     hdcTemp = readTempHDC();
-    prob1 = readTMP(1);
-    prob2 = readTMP(2);
-    prob3 = readTMP(3);
+    prob1 = readTMP(0);
+    prob2 = readTMP(1);
+    prob3 = readTMP(2);
 
     char log_message[256];
     snprintf(log_message, sizeof(log_message), "%02d:%02d:%02d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n",
