@@ -1,4 +1,4 @@
-#include <thermistor.h>
+#include "thermistor.h"
 
 //Function definitions  
 double readTMP(unsigned int pin)  
