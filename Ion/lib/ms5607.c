@@ -18,7 +18,7 @@ struct timespec delay = {
     .tv_nsec = 500000000
 };
 
-struct timespec conv_delay = {
+struct timespec msconv_delay = {
     .tv_sec = 0,
     .tv_nsec = 10000000L
 };
@@ -106,7 +106,7 @@ char startConversion(char CMD)
         perror("failed to send command");
         return 0;
     }
-    nanosleep(&conv_delay, NULL);
+    nanosleep(&msconv_delay, NULL);
     close(file);
     return 1;
 }
@@ -231,37 +231,37 @@ void setOSR(short OSR_U){
             CONV_D1 = 0x40;
           CONV_D2 = 0x50;
           Conv_Delay = 1;
-          conv_delay.tv_nsec = Conv_Delay * 1000000L;
+          msconv_delay.tv_nsec = Conv_Delay * 1000000L;
           break;
       case 512:
           CONV_D1 = 0x42;
           CONV_D2 = 0x52;
           Conv_Delay = 2;
-          conv_delay.tv_nsec = Conv_Delay * 1000000L;
+          msconv_delay.tv_nsec = Conv_Delay * 1000000L;
           break;
       case 1024:
           CONV_D1 = 0x44;
           CONV_D2 = 0x54;
           Conv_Delay = 3;
-          conv_delay.tv_nsec = Conv_Delay * 1000000L;
+          msconv_delay.tv_nsec = Conv_Delay * 1000000L;
           break;
       case 2048:
           CONV_D1 = 0x46;
           CONV_D2 = 0x56;
           Conv_Delay = 5;
-          conv_delay.tv_nsec = Conv_Delay * 1000000L;
+          msconv_delay.tv_nsec = Conv_Delay * 1000000L;
           break;
       case 4096:
           CONV_D1 = 0x48;
           CONV_D2 = 0x58;
           Conv_Delay = 10;
-          conv_delay.tv_nsec = Conv_Delay * 1000000L;
+          msconv_delay.tv_nsec = Conv_Delay * 1000000L;
           break;
       default:
           CONV_D1 = 0x40;
           CONV_D2 = 0x50;
           Conv_Delay = 1;
-          conv_delay.tv_nsec = Conv_Delay * 1000000L;
+          msconv_delay.tv_nsec = Conv_Delay * 1000000L;
           break;
     }
   }

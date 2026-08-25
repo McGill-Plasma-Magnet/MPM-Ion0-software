@@ -1,6 +1,6 @@
 #include "hdc2080.h"
 
-struct timespec conv_delay = {
+struct timespec hdcconv_delay = {
     .tv_sec = 0,
     .tv_nsec = 1500000
 };
@@ -141,7 +141,7 @@ int startMeasurementHDC ()
         nanosleep( &poll_delay, NULL);
     }
     perror("Conversion was not completed"); */
-    nanosleep( &conv_delay, NULL);
+    nanosleep( &hdcconv_delay, NULL);
     close(file);
     return 1;
 }
