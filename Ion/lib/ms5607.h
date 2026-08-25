@@ -18,7 +18,7 @@
 //function used to interface with sensor
 char msBegin();
 void setOSR(short OSR_U);
-float getTemprature();
+float getTemperature();
 float getPressure();
 char readDigitalValue();
 

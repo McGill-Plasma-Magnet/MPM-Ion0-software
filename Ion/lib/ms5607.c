@@ -3,7 +3,7 @@
 static const float P0 = 1011.25;
 static short OSR = 4096; //default and highest resolution config
 static short CONV_D1 = 0x48; //CONV for pressure at max resolution
-static short CONV_D2 = 0x58; //conversion for temprature at max resolution
+static short CONV_D2 = 0x58; //conversion for temperature at max resolution
 static char Conv_Delay = 10; //give time for conversion
 
 static int file;
@@ -209,7 +209,7 @@ static void calculateCompensation(void)
     );
 }
 
-float getTemprature()
+float getTemperature()
 {
     calculateCompensation();
     return TEMP/100 ;

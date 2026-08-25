@@ -20,7 +20,7 @@ int main(void)
             return 1;
         }
 
-        printf("Temperature: %.2f C\n", getTemprature());
+        printf("Temperature: %.2f C\n", getTemperature());
         printf("Pressure:    %.2f mbar\n\n", getPressure());
 
         sleep(1);
