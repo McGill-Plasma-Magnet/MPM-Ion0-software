@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdint.h>
-#include<stdio.h>
-#include<fcntl.h>
-#include<sys/ioctl.h>
-#include<linux/i2c.h>
-#include<linux/i2c-dev.h>
-#include<unistd.h>
-#include<time.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/i2c.h>
+#include <linux/i2c-dev.h>
+#include <unistd.h>
+#include <time.h>
 
 #define I2C_DEV "/dev/i2c-1"
 #define HDC2080_ADDR 0x41
