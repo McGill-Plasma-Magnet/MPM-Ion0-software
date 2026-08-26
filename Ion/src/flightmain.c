@@ -41,7 +41,6 @@ void getState(void)
     if (file == NULL)
     {
         fprintf(stderr, "State file missing, using PRELAUNCH\n");
-        fflush(stderr);
         state = PRELAUNCH;
         return;
     }
@@ -52,14 +51,12 @@ void getState(void)
         !validState(savedState))
     {
         fprintf(stderr, "Invalid state file, using PRELAUNCH\n");
-        fflush(stderr);
         state = PRELAUNCH;
     }
     else
     {
         state = (FlightState)savedState;
-        fprintf(stdout, "selected state %d", savedState);
-        fflush(stdout);
+        fprintf(stdout, "selected state %d\n", savedState);
     }
 
     fflush(file);
@@ -137,6 +134,7 @@ int main()
                     if (++thresholdCount >= 5)
                     {
                         changeState(ASCENT);
+                        printf("Detected Ascent changing state");
                         thresholdCount = 0;
                     }else{
                        thresholdCount = 0;
@@ -166,6 +164,7 @@ int main()
                     break;
             case DELAY:
                     nanosleep( &missionDelay, NULL);
+                    printf("going into delay\n");
                     changeState(EXTRUSION_2);
                     break;
             case EXTRUSION_2:
@@ -182,7 +181,7 @@ int main()
                         if (++thresholdCount >= 5)
                         {
                             changeState(LANDING);
-                            printf("started retrusion payload\n");
+                            printf("started retrusion of loops\n");
                             thresholdCount = 0;
                         }else{
                             thresholdCount = 0;
