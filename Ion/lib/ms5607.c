@@ -13,7 +13,7 @@ static float dT, TEMP, P;
 static int64_t OFF, SENS;
 
 
-struct timespec delay = {
+struct timespec msdelay = {
     .tv_sec = 0,
     .tv_nsec = 500000000
 };
@@ -48,7 +48,7 @@ char resetDevice()
         perror("failed to resest sensor\n");
         return 0; //error
     }
-    nanosleep(&delay, NULL); //delay of 1s to give time for the sensor to restart
+    nanosleep(&msdelay, NULL); //delay of 1s to give time for the sensor to restart
     close(file);
     return(1); //success
 }
