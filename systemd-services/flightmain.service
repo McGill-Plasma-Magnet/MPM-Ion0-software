@@ -1,0 +1,11 @@
+[Unit]
+Desctiption=Misson software service
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=2
+ExecStart=/home/debian/MPM-Ion0-software/Ion/bin/flightmain
+
+[Install]
+WantedBy=multi-user.target

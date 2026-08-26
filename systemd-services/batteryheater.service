@@ -1,0 +1,11 @@
+[Unit]
+Desctiption= Battery heater service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=2
+ExecStart=/home/debian/MPM-Ion0-software/Ion/bin/batteryheater
+
+[Install]
+WantedBy=multi-user.target

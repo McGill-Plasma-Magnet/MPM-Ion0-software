@@ -1,0 +1,11 @@
+[Unit]
+Desctiption= Logging sensor data service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=2
+ExecStart=/home/debian/MPM-Ion0-software/Ion/bin/logsmain
+
+[Install]
+WantedBy=multi-user.target
