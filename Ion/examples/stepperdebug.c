@@ -4,7 +4,7 @@
 #include <termios.h>
 #include <sys/select.h>
 
-#define BURST_STEPS 35
+#define BURST_STEPS 30
 
 static struct termios old_term;
 
@@ -95,8 +95,8 @@ int main(void)
     printf("\nStepper debug controls:\n");
     printf("  w       = 35-step forward burst\n");
     printf("  s       = 35-step reverse burst\n");
-    printf("  Shift+w = continuous forward\n");
-    printf("  Shift+s = continuous reverse\n");
+    printf("  f       = continuous forward\n");
+    printf("  b       = continuous reverse\n");
     printf("  d       = increase speed\n");
     printf("  a       = decrease speed\n");
     printf("  q       = quit\n\n");
