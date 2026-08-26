@@ -29,9 +29,6 @@ typedef enum{
 
 static FlightState state;
 
-#include <stdio.h>
-#include <unistd.h>
-
 static int validState(int value)
 {
     return value >= PRELAUNCH && value <= LANDED;
@@ -98,6 +95,10 @@ int main()
     getState();
 
     int counter = 0;
+    int initial_state[7] = {0, 0, 0, 1, 1, 0, 0};
+    float Pressure;
+    int pressureValid;
+    int thresholdCount = 0;
 
     //attempt calibration 5 times until succeeds
     int calOk = 0;
@@ -105,9 +106,12 @@ int main()
 
     /* Highest resolution */
     setOSR(4096);
-    float Pressure;
-    int pressureValid;
-    int thresholdCount;
+
+    if (initStp(initial_state) != 0) {
+        fprintf(stderr, "Failed to initialize stepper\n");
+        return 1;
+    }
+
     for (;;)
     {
         pressureValid = 1;
@@ -193,6 +197,7 @@ int main()
                     changeState(LANDED);
                     printf("Finished landing proceedure waiting for touchdown\n");
                     fflush(stdout);
+                    endStepper(initial_state);
                     break;
             case LANDED:
                     //do nothing

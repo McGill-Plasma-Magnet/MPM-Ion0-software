@@ -25,7 +25,7 @@
 
      P8_9_pinmux { status = "disabled"; };
      P8_10_pinmux { status = "disabled"; };
-     P8_12_pinmux { status = "disabled"; };
+     P8_11_pinmux { status = "disabled"; };
      P8_13_pinmux { status = "disabled"; };
      P8_14_pinmux { status = "disabled"; };
      P8_15_pinmux { status = "disabled"; };
@@ -58,7 +58,7 @@
         pinctrl-single,pins = <
             0x09c (PIN_INPUT_PULLUP | MUX_MODE7) /*P8_9*/
             0x098 (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P8_10*/
-            0x030 (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P8_12*/
+            0x034 (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P8_11*/
             0x024 (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P8_13*/
             0x028 (PIN_OUTPUT_PULLDOWN | MUX_MODE7) /*P8_14*/
             0x03c (PIN_OUTPUT_PULLUP | MUX_MODE7) /*P8_15*/
