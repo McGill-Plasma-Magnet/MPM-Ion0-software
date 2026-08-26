@@ -58,6 +58,7 @@ void getState(void)
     else
     {
         state = (FlightState)savedState;
+        fprintf(stdout, "selected state %d", savedState);
     }
 
     fclose(file);
@@ -95,7 +96,8 @@ int main()
     getState();
 
     int counter = 0;
-    int initial_state[7] = {0, 0, 0, 1, 1, 0, 0};
+    // [MS0, MS1, MS2, RST, SLP, EN, DIR]
+    int initial_state[7] = {0, 0, 0, 1, 0, 0, 0};
     float Pressure;
     int pressureValid;
     int thresholdCount = 0;
@@ -152,11 +154,11 @@ int main()
                     }
                     break;
             case EXTRUSION_1:
-                    stpSetSlp(0);
+                    stpSetSlp(1);
                     printf("started first extrusion\n");
                     extrudeTape(10000);
                     printf("completed first extrusion\n");
-                    stpSetSlp(1);
+                    stpSetSlp(0);
                     changeState(DELAY);
                     break;
             case DELAY:
@@ -164,11 +166,11 @@ int main()
                     changeState(EXTRUSION_2);
                     break;
             case EXTRUSION_2:
-                    stpSetSlp(0);
+                    stpSetSlp(1);
                     printf("started second extrusion\n");
                     extrudeTape(10000);
                     printf("completed second extrusion\n");
-                    stpSetSlp(1);
+                    stpSetSlp(0);
                     changeState(COMPLETE);
                     break;
             case COMPLETE:
@@ -185,7 +187,7 @@ int main()
                     }
                     break;
             case LANDING:
-                    stpSetSlp(0);
+                    stpSetSlp(1);
                     for (int i = 0; i < 100; i++)
                     {
                         extrudeTape(200);
@@ -193,7 +195,7 @@ int main()
                         extrudeTape(100);
                         stpSWDir();
                     }
-                    stpSetSlp(1);
+                    stpSetSlp(0);
                     changeState(LANDED);
                     printf("Finished landing proceedure waiting for touchdown\n");
                     fflush(stdout);
