@@ -1,29 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <signal.h>
 
 #include "logs.h"
 
 #define NUM_READINGS 20
 #define READING_INTERVAL_SEC 1
 
-static volatile sig_atomic_t keepRunning = 1;
-
-static void handleSigint(int sig)
-{
-    (void)sig;
-    keepRunning = 0;
-}
-
 int main(void)
 {
-    signal(SIGINT, handleSigint);
-
-    /* NOTE: createFile() currently returns 1 on success / 0 on failure --
-     * the opposite convention from every other function in logs.c. Worth
-     * making consistent, but this example calls it the way it's written
-     * today. */
     if (!createFile())
     {
         fprintf(stderr, "createFile() failed, exiting\n");
@@ -57,5 +42,5 @@ int main(void)
     //dead code but why not if something bad happens
     logMessage("something bad happened");
     flushClose();
-    return EXIT_SUCCESS;
+    return EXIT_FAILURE;
 }
