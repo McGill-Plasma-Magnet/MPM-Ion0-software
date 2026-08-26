@@ -59,8 +59,11 @@ void getState(void)
     {
         state = (FlightState)savedState;
         fprintf(stdout, "selected state %d", savedState);
+        fflush(stdout);
     }
 
+    fflush(file);
+    fsync(fileno(file));
     fclose(file);
 }
 
