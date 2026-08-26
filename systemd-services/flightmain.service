@@ -5,6 +5,7 @@ Desctiption=Misson software service
 Type=simple
 Restart=on-failure
 RestartSec=2
+ExecStart=/bin/bash -c 'echo 0 > /home/debian/logs/state.txt'
 ExecStart=/home/debian/MPM-Ion0-software/Ion/bin/flightmain
 
 [Install]
