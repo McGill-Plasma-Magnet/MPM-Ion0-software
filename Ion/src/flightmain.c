@@ -12,7 +12,7 @@ struct timespec loopDelay = {
 };
 
 struct timespec missionDelay = {
-    .tv_sec = 300,
+    .tv_sec = 60,
     .tv_nsec = 0
 };
 
@@ -136,9 +136,9 @@ int main()
                         changeState(ASCENT);
                         printf("Detected Ascent changing state");
                         thresholdCount = 0;
-                    }else{
-                       thresholdCount = 0;
                     }
+                }else{
+                    thresholdCount = 0;
                 }
                 break;
             case ASCENT:
@@ -149,15 +149,16 @@ int main()
                             changeState(EXTRUSION_1);
                             printf("Initiation first Extrusion\n");
                             thresholdCount = 0;
-                        }else{
-                            thresholdCount = 0;
                         }
+                    }else{
+                        thresholdCount = 0;
                     }
                     break;
             case EXTRUSION_1:
                     stpSetSlp(1);
                     printf("started first extrusion\n");
-                    extrudeTape(10000);
+                    //10 000 is 5.55cm of extrusion
+                    extrudeTape(360360);
                     printf("completed first extrusion\n");
                     stpSetSlp(0);
                     changeState(DELAY);
@@ -170,7 +171,8 @@ int main()
             case EXTRUSION_2:
                     stpSetSlp(1);
                     printf("started second extrusion\n");
-                    extrudeTape(10000);
+                    //10 000 is 5.55cm of extrusion
+                    extrudeTape(360360);
                     printf("completed second extrusion\n");
                     stpSetSlp(0);
                     changeState(COMPLETE);
@@ -183,9 +185,9 @@ int main()
                             changeState(LANDING);
                             printf("started retrusion of loops\n");
                             thresholdCount = 0;
-                        }else{
-                            thresholdCount = 0;
                         }
+                    }else{
+                        thresholdCount = 0;
                     }
                     break;
             case LANDING:
@@ -201,14 +203,13 @@ int main()
                     changeState(LANDED);
                     printf("Finished landing proceedure waiting for touchdown\n");
                     fflush(stdout);
-                    endStepper(initial_state);
                     break;
             case LANDED:
                     //do nothing
                     break;
         }
         counter++;
-        if (counter >= 24000)
+        if (counter >= 10)
         {
             if (state == PRELAUNCH || state == ASCENT)
             {
