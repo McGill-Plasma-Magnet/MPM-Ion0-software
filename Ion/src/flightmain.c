@@ -101,6 +101,10 @@ int main()
     setvbuf(stdout, NULL, _IOLBF, 0);
     FILE *log = fopen(LOGS_PATH, "a");
 
+    if (log == NULL) {
+        fprintf(stderr, "Failed to open log file\n");
+    return 1;
+    }
     int counter = 0;
     int invCounter = -1;
     // [MS0, MS1, MS2, RST, SLP, EN, DIR]
