@@ -7,6 +7,7 @@
 #include "current.h"
 
 #define STATE_PATH "/home/debian/logs/state.txt"
+#define LOGS_PATH "/home/debian/logs/flightlogs.txt"
 
 struct timespec loopDelay = {
     .tv_sec = 0,
@@ -98,6 +99,7 @@ int main()
 {
     getState();
     setvbuf(stdout, NULL, _IOLBF, 0);
+    FILE *log = fopen(LOGS_PATH, "a");
 
     int counter = 0;
     int invCounter = -1;
@@ -158,7 +160,8 @@ int main()
                     if (++thresholdCount >= 5)
                     {
                         changeState(ASCENT);
-                        printf("Detected Ascent changing state\n");
+                        fprintf(log,"Detected Ascent changing state\n");
+                        fflush(log);
                         thresholdCount = 0;
                     }
                 }else{
@@ -167,16 +170,19 @@ int main()
                 break;
             case ASCENT:
                 nanosleep( &missionDelay, NULL);
-                printf("going into delay\n");
+                fprintf(log,"going into delay\n");
+                fflush(log);
                 changeState(EXTRUSION_1);
                 break;
             case EXTRUSION_1:
                 stpSetSlp(1);
-                printf("started first extrusion\n");
+                fprintf(log,"started first extrusion\n");
+                fflush(log);
                 //10 000 is 5.55cm of extrusion
                 //extrude 133 cm 
                 extrudeTape(239640);
-                printf("completed first extrusion\n");
+                fprintf(log,"completed first extrusion\n");
+                fflush(log);
                 stpSetSlp(0);
                 changeState(DELAY);
                 break;
@@ -186,7 +192,8 @@ int main()
                     if (++thresholdCount >= 5)
                     {
                         changeState(EXTRUSION_2);
-                        printf("Initiation second Extrusion\n");
+                        fprintf(log,"Initiation second Extrusion\n");
+                        fflush(log);
                         thresholdCount = 0;
                     }
                 }else{
@@ -195,11 +202,13 @@ int main()
                 break;
             case EXTRUSION_2:
                 stpSetSlp(1);
-                printf("started second extrusion\n");
+                fprintf(log, "started second extrusion\n");
+                fflush(log);
                 //10 000 is 5.55cm of extrusion
                 // extrude 276 cm
                 extrudeTape(497297);
-                printf("completed second extrusion\n");
+                fprintf(log,"completed second extrusion\n");
+                fflush(log);
                 stpSetSlp(0);
                 changeState(INVERTER);
                 break;
@@ -215,7 +224,8 @@ int main()
                 }else{
                     invCounter++;
                     current = readCurrent();
-                    printf("current reading: %f\n", current);
+                    fprintf(log, "current reading: %f\n", current);
+                    fflush(log);
 
                 }
                 break;
@@ -225,7 +235,8 @@ int main()
                     if (++thresholdCount >= 5)
                     {
                         changeState(LANDING);
-                        printf("started retrusion of loops\n");
+                        fprintf(log, "started retrusion of loops\n");
+                        fflush(log);
                         thresholdCount = 0;
                     }
                 }else{
@@ -237,8 +248,9 @@ int main()
                 stpSWDir();
                 extrudeTape(675675);
                 changeState(LANDED);
-                printf("Finished landing proceedure waiting for touchdown\n");
-                fflush(stdout);
+                fprintf(log, "Finished landing proceedure waiting for touchdown\n");
+                fflush(log);
+                fclose(log);
                 break;
             case LANDED:
                 //do nothing
