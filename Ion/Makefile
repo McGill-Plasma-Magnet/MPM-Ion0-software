@@ -16,6 +16,7 @@ LIB_SRCS := \
 	$(LIB_DIR)/motors.c \
 	$(LIB_DIR)/ms5607.c \
 	$(LIB_DIR)/stepper.c \
+	$(LIB_DIR)/current.c \
 	$(LIB_DIR)/thermistor.c
 
 LIB_OBJS := $(patsubst $(LIB_DIR)/%.c,$(BUILD_DIR)/%.o,$(LIB_SRCS))
