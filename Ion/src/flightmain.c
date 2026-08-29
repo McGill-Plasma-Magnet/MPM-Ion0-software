@@ -7,7 +7,6 @@
 #include "current.h"
 
 #define STATE_PATH "/home/debian/logs/state.txt"
-#define LOGS_PATH "/home/debian/logs/flightlogs.txt"
 
 struct timespec loopDelay = {
     .tv_sec = 0,
@@ -99,12 +98,7 @@ int main()
 {
     getState();
     setvbuf(stdout, NULL, _IOLBF, 0);
-    FILE *log = fopen(LOGS_PATH, "a");
 
-    if (log == NULL) {
-        fprintf(stderr, "Failed to open log file\n");
-    return 1;
-    }
     int counter = 0;
     int invCounter = -1;
     // [MS0, MS1, MS2, RST, SLP, EN, DIR]
@@ -164,8 +158,7 @@ int main()
                     if (++thresholdCount >= 5)
                     {
                         changeState(ASCENT);
-                        fprintf(log,"Detected Ascent changing state\n");
-                        fflush(log);
+                        printf("Detected Ascent changing state\n");
                         thresholdCount = 0;
                     }
                 }else{
@@ -174,19 +167,16 @@ int main()
                 break;
             case ASCENT:
                 nanosleep( &missionDelay, NULL);
-                fprintf(log,"going into delay\n");
-                fflush(log);
+                printf("going into delay\n");
                 changeState(EXTRUSION_1);
                 break;
             case EXTRUSION_1:
                 stpSetSlp(1);
-                fprintf(log,"started first extrusion\n");
-                fflush(log);
+                printf("started first extrusion\n");
                 //10 000 is 5.55cm of extrusion
                 //extrude 133 cm 
                 extrudeTape(239640);
-                fprintf(log,"completed first extrusion\n");
-                fflush(log);
+                printf("completed first extrusion\n");
                 stpSetSlp(0);
                 changeState(DELAY);
                 break;
@@ -196,8 +186,7 @@ int main()
                     if (++thresholdCount >= 5)
                     {
                         changeState(EXTRUSION_2);
-                        fprintf(log,"Initiation second Extrusion\n");
-                        fflush(log);
+                        printf("Initiation second Extrusion\n");
                         thresholdCount = 0;
                     }
                 }else{
@@ -206,13 +195,11 @@ int main()
                 break;
             case EXTRUSION_2:
                 stpSetSlp(1);
-                fprintf(log, "started second extrusion\n");
-                fflush(log);
+                printf("started second extrusion\n");
                 //10 000 is 5.55cm of extrusion
                 // extrude 276 cm
                 extrudeTape(497297);
-                fprintf(log,"completed second extrusion\n");
-                fflush(log);
+                printf("completed second extrusion\n");
                 stpSetSlp(0);
                 changeState(INVERTER);
                 break;
@@ -228,8 +215,7 @@ int main()
                 }else{
                     invCounter++;
                     current = readCurrent();
-                    fprintf(log, "current reading: %f\n", current);
-                    fflush(log);
+                    printf("current reading: %f\n", current);
 
                 }
                 break;
@@ -239,8 +225,7 @@ int main()
                     if (++thresholdCount >= 5)
                     {
                         changeState(LANDING);
-                        fprintf(log, "started retrusion of loops\n");
-                        fflush(log);
+                        printf("started retrusion of loops\n");
                         thresholdCount = 0;
                     }
                 }else{
@@ -252,9 +237,8 @@ int main()
                 stpSWDir();
                 extrudeTape(675675);
                 changeState(LANDED);
-                fprintf(log, "Finished landing proceedure waiting for touchdown\n");
-                fflush(log);
-                fclose(log);
+                printf("Finished landing proceedure waiting for touchdown\n");
+                fflush(stdout);
                 break;
             case LANDED:
                 //do nothing

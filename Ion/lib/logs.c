@@ -80,7 +80,7 @@ char logData()
     time_t t = time(NULL);
     struct tm *tm_info = localtime(&t);
 
-    float pressure, msTemp, humidity, hdcTemp, prob1, prob2, prob3;
+    float pressure, msTemp, humidity, hdcTemp, prob1, prob2, prob3, current;
 
     //initialize all sensors
     if (!readDigitalValue())
@@ -103,9 +103,10 @@ char logData()
     prob1 = readTMP(0);
     prob2 = readTMP(1);
     prob3 = readTMP(2);
+    current = readCurrent();
 
     char log_message[256];
-    snprintf(log_message, sizeof(log_message), "%02d:%02d:%02d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n",
+    snprintf(log_message, sizeof(log_message), "%02d:%02d:%02d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f, %.2f\n",
             tm_info->tm_hour, 
             tm_info->tm_min, 
             tm_info->tm_sec,
@@ -115,7 +116,8 @@ char logData()
             hdcTemp,
             prob1,
             prob2,
-            prob3);
+            prob3,
+            current);
     memcpy(dataBuffer + bufferLen, log_message, strlen(log_message));
     bufferLen += strlen(log_message);
     if (bufferLen >= chunkSize)

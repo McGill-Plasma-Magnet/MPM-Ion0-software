@@ -7,6 +7,10 @@
 #define NUM_READINGS 20
 #define READING_INTERVAL_SEC 1
 
+struct timespec logDelay = {
+    .tv_sec = 0,
+    .tv_nsec = 200000000
+};
 int main(void)
 {
     if (!createFile())
@@ -36,6 +40,7 @@ int main(void)
             printf("Logged reading %d\n", i);
         }
         sleep(READING_INTERVAL_SEC);
+                nanosleep( &logDelay, NULL);
         i++;
     }
 
