@@ -14,7 +14,7 @@ struct timespec loopDelay = {
 };
 
 struct timespec missionDelay = {
-    .tv_sec = 1200,
+    .tv_sec = 1,
     .tv_nsec = 0
 };
 
@@ -157,7 +157,7 @@ int main()
                     if (++thresholdCount >= 5)
                     {
                         changeState(ASCENT);
-                        printf("Detected Ascent changing state");
+                        printf("Detected Ascent changing state\n");
                         thresholdCount = 0;
                     }
                 }else{
@@ -208,11 +208,10 @@ int main()
                     setOffset();
                     gpiod_line_set_value(inv, 1);
                     invCounter++;
-                }else if (invCounter >= 10){
+                }else if (invCounter >= 1000){
                     gpiod_line_set_value(inv, 0);
                     changeState(COMPLETE);
                 }else{
-
                     invCounter++;
                     current = readCurrent();
                     printf("current reading: %f\n", current);
@@ -245,7 +244,6 @@ int main()
         }
         counter++;
 
-        //remover this only testing the inverter
         if (counter >= 10)
         {
             changeState(INVERTER);
