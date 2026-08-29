@@ -14,7 +14,7 @@ struct timespec loopDelay = {
 };
 
 struct timespec missionDelay = {
-    .tv_sec = 1,
+    .tv_sec = 12000,
     .tv_nsec = 0
 };
 
@@ -208,13 +208,14 @@ int main()
                     setOffset();
                     gpiod_line_set_value(inv, 1);
                     invCounter++;
-                }else if (invCounter >= 1000){
+                }else if (invCounter >= 1000){ //run inverter for 10 seconds
                     gpiod_line_set_value(inv, 0);
                     changeState(COMPLETE);
                 }else{
                     invCounter++;
                     current = readCurrent();
                     printf("current reading: %f\n", current);
+
                 }
                 break;
             case COMPLETE:
@@ -243,19 +244,6 @@ int main()
                 break;
         }
         counter++;
-
-        if (counter >= 10)
-        {
-            changeState(INVERTER);
-        }
-        if (counter >= 4500000)
-        {
-            if (state == COMPLETE)
-            {
-                changeState(LANDING);
-                printf("triggered retrusion through timeout\n");
-            }
-        }
         nanosleep( &loopDelay, NULL);
     }
 }
