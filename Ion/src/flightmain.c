@@ -174,7 +174,7 @@ int main()
                 printf("started first extrusion\n");
                 //10 000 is 5.55cm of extrusion
                 //extrude 133 cm 
-                extrudeTape(1);
+                extrudeTape(239640);
                 printf("completed first extrusion\n");
                 stpSetSlp(0);
                 changeState(DELAY);
@@ -208,7 +208,7 @@ int main()
                     setOffset();
                     gpiod_line_set_value(inv, 1);
                     invCounter++;
-                }else if (invCounter >= 1000){ //run inverter for 10 seconds
+                }else if (invCounter >= 100){ //run inverter for 10 seconds
                     gpiod_line_set_value(inv, 0);
                     changeState(COMPLETE);
                 }else{
