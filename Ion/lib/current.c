@@ -10,7 +10,7 @@
 
 static int zeroOffsetRaw = 0;
 
-double setOffset()  
+void setOffset()  
 {  
     int fd;          //file pointer  
     int pin = 6;
@@ -32,8 +32,7 @@ double setOffset()
     close(fd);     //close file and stop reading  
 
     zeroOffsetRaw = atoi(val);
-    return temp;
-}//end read ADC()
+}
 
 double readCurrent()  
 {  
@@ -56,7 +55,7 @@ double readCurrent()
     read(fd, &val, 6);     //read ADC ing val (up to 4 digits 0-4093)  
     close(fd);     //close file and stop reading  
 
-    int corrected = atoi(val) - zero_offset_raw;
+    int corrected = atoi(val) - zeroOffsetRaw;
     float v_out   = (corrected / ADC_COUNTS) * ADC_VREF;
     float v_shunt = v_out / GAIN;
     return v_shunt / R_SHUNT;   // amps
