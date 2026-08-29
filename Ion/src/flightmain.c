@@ -10,7 +10,7 @@
 
 struct timespec loopDelay = {
     .tv_sec = 0,
-    .tv_nsec = 10000000
+    .tv_nsec = 100000000
 };
 
 struct timespec missionDelay = {
