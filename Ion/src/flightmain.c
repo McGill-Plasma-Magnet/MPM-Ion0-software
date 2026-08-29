@@ -3,16 +3,17 @@
 #include <unistd.h>
 #include "stepper.h"
 #include "ms5607.h"
+#include "current.h"
 
 #define STATE_PATH "/home/debian/logs/state.txt"
 
 struct timespec loopDelay = {
     .tv_sec = 0,
-    .tv_nsec = 100000000
+    .tv_nsec = 10000000
 };
 
 struct timespec missionDelay = {
-    .tv_sec = 60,
+    .tv_sec = 1200,
     .tv_nsec = 0
 };
 
@@ -22,6 +23,7 @@ typedef enum{
     EXTRUSION_1,
     DELAY,
     EXTRUSION_2,
+    INVERTER,
     COMPLETE,
     LANDING,
     LANDED
@@ -48,7 +50,7 @@ void getState(void)
     int savedState;
 
     if (fscanf(file, "%d", &savedState) != 1 ||
-        !validState(savedState))
+            !validState(savedState))
     {
         fprintf(stderr, "Invalid state file, using PRELAUNCH\n");
         state = PRELAUNCH;
@@ -96,6 +98,7 @@ int main()
     getState();
 
     int counter = 0;
+    int invCounter = -1;
     // [MS0, MS1, MS2, RST, SLP, EN, DIR]
     int initial_state[7] = {0, 0, 0, 1, 0, 0, 0};
     float Pressure;
@@ -114,6 +117,25 @@ int main()
         return 1;
     }
 
+    float current;
+    //initialized GPIO
+    static struct gpiod_chip *chipInv;
+    static struct gpiod_line *inv;
+    static struct gpiod_line *led;
+
+    chipInv = gpiod_chip_open("/dev/gpiochip0");
+    if (!chipInv)
+    {
+        perror("gpiod_chip_open inverter problem");
+    }
+    inv = gpiod_chip_get_line(chipInv, 9);
+    led = gpiod_chip_get_line(chipInv, 26);
+
+    gpiod_line_request_output(inv, "mainflight", 0);
+    gpiod_line_request_output(led, "mainflight", 0);
+
+    gpiod_line_set_value(led, 1);
+
     for (;;)
     {
         pressureValid = 1;
@@ -129,7 +151,7 @@ int main()
         switch (state) 
         {
             case PRELAUNCH:
-                if (Pressure <= 1000.0f && Pressure != 0.0f && pressureValid)
+                if (Pressure <= 1100.0f && Pressure != 0.0f && pressureValid)
                 {
                     if (++thresholdCount >= 5)
                     {
@@ -142,89 +164,97 @@ int main()
                 }
                 break;
             case ASCENT:
-                    if (Pressure <= 110.0f && Pressure != 0.0f && pressureValid)
-                    {
-                        if (++thresholdCount >= 5)
-                        {
-                            changeState(EXTRUSION_1);
-                            printf("Initiation first Extrusion\n");
-                            thresholdCount = 0;
-                        }
-                    }else{
-                        thresholdCount = 0;
-                    }
-                    break;
+                nanosleep( &missionDelay, NULL);
+                printf("going into delay\n");
+                changeState(EXTRUSION_1);
+                break;
             case EXTRUSION_1:
-                    stpSetSlp(1);
-                    printf("started first extrusion\n");
-                    //10 000 is 5.55cm of extrusion
-                    extrudeTape(360360);
-                    printf("completed first extrusion\n");
-                    stpSetSlp(0);
-                    changeState(DELAY);
-                    break;
+                stpSetSlp(1);
+                printf("started first extrusion\n");
+                //10 000 is 5.55cm of extrusion
+                //extrude 133 cm 
+                extrudeTape(1);
+                printf("completed first extrusion\n");
+                stpSetSlp(0);
+                changeState(DELAY);
+                break;
             case DELAY:
-                    nanosleep( &missionDelay, NULL);
-                    printf("going into delay\n");
-                    changeState(EXTRUSION_2);
-                    break;
-            case EXTRUSION_2:
-                    stpSetSlp(1);
-                    printf("started second extrusion\n");
-                    //10 000 is 5.55cm of extrusion
-                    extrudeTape(360360);
-                    printf("completed second extrusion\n");
-                    stpSetSlp(0);
-                    changeState(COMPLETE);
-                    break;
-            case COMPLETE:
-                    if (Pressure >= 600.0f && Pressure != 0.0f && pressureValid)
+                if (Pressure <= 110.0f && Pressure != 0.0f && pressureValid)
+                {
+                    if (++thresholdCount >= 5)
                     {
-                        if (++thresholdCount >= 5)
-                        {
-                            changeState(LANDING);
-                            printf("started retrusion of loops\n");
-                            thresholdCount = 0;
-                        }
-                    }else{
+                        changeState(EXTRUSION_2);
+                        printf("Initiation second Extrusion\n");
                         thresholdCount = 0;
                     }
-                    break;
-            case LANDING:
-                    stpSetSlp(1);
-                    for (int i = 0; i < 100; i++)
+                }else{
+                    thresholdCount = 0;
+                }
+                break;
+            case EXTRUSION_2:
+                stpSetSlp(1);
+                printf("started second extrusion\n");
+                //10 000 is 5.55cm of extrusion
+                // extrude 276 cm
+                extrudeTape(497297);
+                printf("completed second extrusion\n");
+                stpSetSlp(0);
+                changeState(INVERTER);
+                break;
+            case INVERTER:
+                if (invCounter <= 0)
+                {
+                    setOffset();
+                    gpiod_line_set_value(inv, 1);
+                    invCounter++;
+                }else if (invCount >= 10){
+                    gpoid_line_set_value(inv, 0);
+                    changeState(COMPLETE);
+                }else{
+
+                    invCounter++;
+                    current = readCurrent();
+                    printf("current reading: %f\n", current);
+                }
+                break;
+            case COMPLETE:
+                if (Pressure >= 200.0f && Pressure != 0.0f && pressureValid)
+                {
+                    if (++thresholdCount >= 5)
                     {
-                        extrudeTape(200);
-                        stpSWDir();
-                        extrudeTape(100);
-                        stpSWDir();
+                        changeState(LANDING);
+                        printf("started retrusion of loops\n");
+                        thresholdCount = 0;
                     }
-                    stpSetSlp(0);
-                    changeState(LANDED);
-                    printf("Finished landing proceedure waiting for touchdown\n");
-                    fflush(stdout);
-                    break;
+                }else{
+                    thresholdCount = 0;
+                }
+                break;
+            case LANDING:
+                stpSetSlp(1);
+                stpSWDir();
+                extrudeTape(675675);
+                changeState(LANDED);
+                printf("Finished landing proceedure waiting for touchdown\n");
+                fflush(stdout);
+                break;
             case LANDED:
-                    //do nothing
-                    break;
+                //do nothing
+                break;
         }
         counter++;
+
+        //remover this only testing the inverter
         if (counter >= 10)
         {
-            if (state == PRELAUNCH || state == ASCENT)
+            changeState(INVERTER);
+        }
+        if (counter >= 4500000)
+        {
+            if (state == COMPLETE)
             {
-                changeState(EXTRUSION_1);
-                printf("triggered extrusion 1 through timeout\n");
-                    fflush(stdout);
-            }
-            if (counter >= 57000)
-            {
-                if (state == COMPLETE)
-                {
-                    changeState(LANDING);
-                    printf("triggered retrusion through timeout\n");
-                    fflush(stdout);
-                }
+                changeState(LANDING);
+                printf("triggered retrusion through timeout\n");
             }
         }
         nanosleep( &loopDelay, NULL);
