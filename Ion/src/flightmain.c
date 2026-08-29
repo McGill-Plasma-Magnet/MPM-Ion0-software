@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
+#include <gpiod.h>
 #include "stepper.h"
 #include "ms5607.h"
 #include "current.h"
@@ -208,7 +209,7 @@ int main()
                     gpiod_line_set_value(inv, 1);
                     invCounter++;
                 }else if (invCount >= 10){
-                    gpoid_line_set_value(inv, 0);
+                    gpiod_line_set_value(inv, 0);
                     changeState(COMPLETE);
                 }else{
 
