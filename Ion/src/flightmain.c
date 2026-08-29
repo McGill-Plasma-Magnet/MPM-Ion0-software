@@ -208,7 +208,7 @@ int main()
                     setOffset();
                     gpiod_line_set_value(inv, 1);
                     invCounter++;
-                }else if (invCount >= 10){
+                }else if (invCounter >= 10){
                     gpiod_line_set_value(inv, 0);
                     changeState(COMPLETE);
                 }else{
