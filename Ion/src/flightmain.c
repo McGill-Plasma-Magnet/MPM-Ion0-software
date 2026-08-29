@@ -97,6 +97,7 @@ void changeState(FlightState nextState)
 int main()
 {
     getState();
+    setvbuf(stdout, NULL, _IOLBF, 0);
 
     int counter = 0;
     int invCounter = -1;
@@ -158,7 +159,6 @@ int main()
                     {
                         changeState(ASCENT);
                         printf("Detected Ascent changing state\n");
-                fflush(stdout);
                         thresholdCount = 0;
                     }
                 }else{
@@ -168,18 +168,15 @@ int main()
             case ASCENT:
                 nanosleep( &missionDelay, NULL);
                 printf("going into delay\n");
-                fflush(stdout);
                 changeState(EXTRUSION_1);
                 break;
             case EXTRUSION_1:
                 stpSetSlp(1);
                 printf("started first extrusion\n");
-                fflush(stdout);
                 //10 000 is 5.55cm of extrusion
                 //extrude 133 cm 
                 extrudeTape(239640);
                 printf("completed first extrusion\n");
-                fflush(stdout);
                 stpSetSlp(0);
                 changeState(DELAY);
                 break;
@@ -190,7 +187,6 @@ int main()
                     {
                         changeState(EXTRUSION_2);
                         printf("Initiation second Extrusion\n");
-                fflush(stdout);
                         thresholdCount = 0;
                     }
                 }else{
@@ -200,12 +196,10 @@ int main()
             case EXTRUSION_2:
                 stpSetSlp(1);
                 printf("started second extrusion\n");
-                fflush(stdout);
                 //10 000 is 5.55cm of extrusion
                 // extrude 276 cm
                 extrudeTape(497297);
                 printf("completed second extrusion\n");
-                fflush(stdout);
                 stpSetSlp(0);
                 changeState(INVERTER);
                 break;
@@ -222,7 +216,6 @@ int main()
                     invCounter++;
                     current = readCurrent();
                     printf("current reading: %f\n", current);
-                fflush(stdout);
 
                 }
                 break;
@@ -233,7 +226,6 @@ int main()
                     {
                         changeState(LANDING);
                         printf("started retrusion of loops\n");
-                fflush(stdout);
                         thresholdCount = 0;
                     }
                 }else{
