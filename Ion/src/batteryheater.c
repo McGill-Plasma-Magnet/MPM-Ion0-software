@@ -9,6 +9,9 @@
 #define PERIOD "/sys/class/pwm/pwmchip4/pwm1/period"
 #define DUTY_CYCLE "/sys/class/pwm/pwmchip4/pwm1/duty_cycle"
 #define ENABLE "/sys/class/pwm/pwmchip4/pwm1/enable"
+#define MIN_TEMP 25
+#define MAX_TEMP 30
+#define NORM_TEMP 25
 
 static FILE *fpwm, *fperiod, *fduty, *fen;
 
@@ -41,19 +44,19 @@ int main() {
 
     while(1) {
         batTMP = readTMP(PROB);
-        if (batTMP < -80.0) {
+        if (batTMP < MIN_TEMP) {
             perror("prob is disconnected");
             return -1;
         }
-        else if ( batTMP >= 25.0) {
+        else if ( batTMP >= MAX_TEMP) {
             fprintf(fduty, "0");
             fflush(fduty);
         }
-        else if ( batTMP >= 5.0) {
+        else if ( batTMP >= NORM_TEMP) {
             fprintf(fduty, "500000");
             fflush(fduty);
         }
-        else if ( batTMP < 5.0) {
+        else if ( batTMP < NORM_TEMP) {
             fprintf(fduty, "1000000");
             fflush(fduty);
         }

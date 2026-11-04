@@ -5,10 +5,10 @@ Description=Misson software service
 Type=simple
 Restart=on-failure
 RestartSec=2
-ExecStartPre=/bin/bash -c 'echo 0 > /home/debian/logs/state.txt'
-ExecStart=/home/debian/MPM-Ion0-software/Ion/bin/flightmain
-StandardOutput=append:/home/debian/logs/flightlog.log
-StandardError=append:/home/debian/logs/flightlog.log
+ExecStartPre=/bin/bash -c 'echo 0 > /home/cubesat/logs/state.txt'
+ExecStart=/home/cubesat/MPM-Ion0-software/Ion/bin/flightmain
+StandardOutput=append:/home/cubesat/logs/flightlog.log
+StandardError=append:/home/cubesat/logs/flightlog.log
 
 [Install]
 WantedBy=multi-user.target

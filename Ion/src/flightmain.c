@@ -6,7 +6,7 @@
 #include "ms5607.h"
 #include "current.h"
 
-#define STATE_PATH "/home/debian/logs/state.txt"
+#define STATE_PATH "/home/cubesat/logs/state.txt"
 
 struct timespec loopDelay = {
     .tv_sec = 0,
