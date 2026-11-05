@@ -29,7 +29,7 @@ LOGS_OBJ := $(BUILD_DIR)/logsmain.o
 EXAMPLE_SRCS := $(wildcard $(EXAMPLE_DIR)/*.c)
 EXAMPLE_BINS := $(patsubst $(EXAMPLE_DIR)/%.c,$(BIN_DIR)/%,$(EXAMPLE_SRCS))
 
-.PHONY: all clean rebuild examples directories run ion-fresh run-ex
+.PHONY: all clean rebuild examples directories run ion-fresh run-ex setup-deps verify-yaml
 
 all: directories \
 	$(BIN_DIR)/flightmain \
@@ -75,8 +75,19 @@ run:
 	uv sync
 	uv run ion
 
-ion-fresh: clean
+setup-deps:
+	@echo "Installing system dependencies..."
+	sudo apt-get update && sudo apt-get install -y libyaml-dev
+
+verify-yaml:
+	@echo "Verifying PyYAML C-bindings..."
+	uv run python -c "import yaml; print('SUCCESS: CLoader found' if hasattr(yaml, 'CLoader') else 'FAILURE: Pure-python YAML installed')"
+
+ion-fresh: clean setup-deps
 	$(MAKE) run
+	@echo "Forcing PyYAML rebuild to ensure bindings..."
+	uv pip install --no-cache-dir --force-reinstall pyyaml
+	$(MAKE) verify-yaml
 
 run-ex:
 	./.run_example.sh $(ex)
