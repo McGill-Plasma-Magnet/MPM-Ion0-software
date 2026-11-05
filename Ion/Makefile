@@ -28,7 +28,7 @@ LOGS_OBJ := $(BUILD_DIR)/logsmain.o
 EXAMPLE_SRCS := $(wildcard $(EXAMPLE_DIR)/*.c)
 EXAMPLE_BINS := $(patsubst $(EXAMPLE_DIR)/%.c,$(BIN_DIR)/%,$(EXAMPLE_SRCS))
 
-.PHONY: all clean rebuild examples directories
+.PHONY: all clean rebuild examples directories run ion-fresh
 
 all: directories \
 	$(BIN_DIR)/flightmain \
@@ -65,5 +65,16 @@ directories:
 clean:
 	rm -rf $(BUILD_DIR)
 	rm -f $(BIN_DIR)/*
+	rm -rf .venv
+	rm -rf build dist *.egg-info
 
 rebuild: clean all
+
+run:
+	uv sync
+	uv run ion
+
+ion-fresh:
+	rm -rf .venv
+	uv sync
+	uv run ion
