@@ -1,5 +1,6 @@
 from olaf import app, olaf_run, olaf_setup, render_olaf_template, rest_api
 from ion.services.services import BatteryHeaterService, LogsMainService
+from ion.resources.green_board import GreenBoardResource
 
 
 @rest_api.app.route('/ion-db')
@@ -18,8 +19,8 @@ def main():
     rest_api.add_template('src/templates/ion_db.html')
 
     # add resources (CAN data tx/rx)
-    # e.g., add GreenBoard
-    #app.add_resource()
+    app.add_resource(GreenBoardResource())
+
 
     # add services (systemd)
     app.add_service(BatteryHeaterService())
