@@ -11,15 +11,23 @@ Software for second Ion HAB flight, building off first flight software.
 Go to the Ion directory.
 
 To set up the environment and run the program:
-`make run`
+```
+make run
+```
 
 ### Run an example script
 Assumes your example is within the examples/ directory. Run:
-`make run-ex ex=example_script_name`
+```
+make run-ex ex=example_script_name
+```
 
 ### Run the main program
 If you trust that your environment is not stale:
-`make run`
+```
+make run
+```
 
 Otherwise, to rebuild from scratch and run:
-`make ion-fresh`
+```
+make ion-fresh
+```
