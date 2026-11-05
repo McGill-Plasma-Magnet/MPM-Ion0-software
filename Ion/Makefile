@@ -74,7 +74,5 @@ run:
 	uv sync
 	uv run ion
 
-ion-fresh:
-	rm -rf .venv
-	uv sync
-	uv run ion
+ion-fresh: clean
+	$(MAKE) run
