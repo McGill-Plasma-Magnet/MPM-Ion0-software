@@ -1,0 +1,177 @@
+<title>Ion0 Dashboard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #c41230;
+    --border: #eeeeee;
+    --surface: #fafafa;
+}
+
+    @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+            --bg: #0a0a0a;
+            --fg: #ffffff;
+            --accent: #c41230;
+            --border: #222222;
+            --surface: #111111;
+            color-scheme: dark;
+        }
+    }
+
+    :root[data-theme="dark"] {
+        --bg: #0a0a0a;
+        --fg: #ffffff;
+        --accent: #c41230;
+        --border: #222222;
+        --surface: #111111;
+        color-scheme: dark;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: system-ui, -apple-system, sans-serif;
+        margin: 0;
+        padding: 2rem max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px));
+    }
+
+    header {
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--accent);
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.875rem;
+        opacity: 0.6;
+    }
+
+    section {
+        margin-bottom: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+        color: var(--fg);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-variant-numeric: tabular-nums;
+        font-size: 0.875rem;
+    }
+
+    th, td {
+        padding: 0.5rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+    }
+
+    th {
+        font-weight: 600;
+        color: var(--accent);
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+    }
+
+    .controls {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    button {
+        background: var(--surface);
+        color: var(--fg);
+        border: 1px solid var(--border);
+        padding: 0.25rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    button:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .log-box {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 1rem;
+        font-family: monospace;
+        font-size: 0.8rem;
+        white-space: pre-wrap;
+        border-radius: 4px;
+    }
+</style>
+
+<header>
+    <a href="/">home</a>
+    <br>
+    <h1>Ion0</h1>
+    <p>Satellite Dashboard</p>
+</header>
+
+<section>
+    <h2>GreenBoard</h2>
+    <div class="controls">
+        <button>Update</button>
+        <button>Status</button>
+    </div>
+    <table>
+        <thead>
+            <tr><th>Parameter</th><th>Value</th><th>Time</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>TX Power</td><td>-</td><td>-</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<section>
+    <h2>Services</h2>
+    <table>
+        <thead>
+            <tr><th>Service</th><th>Reading</th><th>Unit</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>GPS</td><td>-</td><td>deg</td><td>-</td></tr>
+            <tr><td>Env</td><td>-</td><td>% / hPa</td><td>-</td></tr>
+            <tr><td>Temp</td><td>-</td><td>°C</td><td>-</td></tr>
+            <tr><td>Heater</td><td>-</td><td>On/Off</td><td>-</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<section>
+    <h2>Logs</h2>
+    <div class="controls">
+        <button>Download</button>
+        <button>Clear</button>
+    </div>
+    <div class="log-box">Waiting for logs...</div>
+</section>
+
+<script>
+    // API logic goes here
+</script>
