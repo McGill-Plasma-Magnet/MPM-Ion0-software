@@ -21,3 +21,7 @@ packages = ["src/ion"]
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+# Force uv to build PyYAML from source so it compiles C bindings
+[tool.uv]
+no-binary-package = ["pyyaml"]
