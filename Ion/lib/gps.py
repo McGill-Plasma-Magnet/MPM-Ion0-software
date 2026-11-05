@@ -182,7 +182,7 @@ class GnssDriver:
         return self._stream, self._reader
 
     def configure(self, rate_ms: int = 1000, messages: Sequence[str] = ("NAV_PVT", "NAV_SAT"),
-                  layers: int = SET_LAYER_RAM, custom_settings: Sequence[tuple[str, int]] | None = None) -> None:
+                  layers: int = SET_LAYER_RAM) -> None:
         """Configure the module with UBX-CFG-VALSET and wait for its acknowledgement.
         
         Turns NMEA off and UBX on for the DDC port, sets the measurement period, and
@@ -194,7 +194,6 @@ class GnssDriver:
                 "NAV_SAT", "NAV_DOP". "NAV_PVT" is required for read_fix.
             layers: pyubx2 SET_LAYER_* flags (OR-able). RAM is lost on power cycle;
                 add SET_LAYER_BBR to persist while the backup supply is present.
-            custom_settings: Optional list of (key, value) tuples for additional configuration.
         
         Raises:
             GnssConfigError: The module rejected the command (UBX-ACK-NAK).
@@ -204,8 +203,6 @@ class GnssDriver:
         stream, _ = self._open()
         settings = [("CFG_I2COUTPROT_NMEA", 0), ("CFG_I2COUTPROT_UBX", 1), ("CFG_RATE_MEAS", rate_ms)]
         settings += [(f"CFG_MSGOUT_UBX_{name}_I2C", 1) for name in messages]
-        if custom_settings:
-            settings += custom_settings
         stream.write(UBXMessage.config_set(layers, TXN_NONE, settings).serialize())
         self._wait_ack(*_CFG_VALSET)
 
