@@ -1,0 +1,27 @@
+[project]
+name = "ion"
+version = "0.1.0"
+description = "Ion software for second launch"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "oresat-olaf>=3.7.4",
+    "pynmeagps==1.1.8",
+    "pyrtcm==1.2.1",
+    "pyubx2==1.4.1",
+    "smbus3==0.5.5",
+]
+
+[project.scripts]
+ion = "ion.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ion"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Force uv to build PyYAML from source so it compiles C bindings
+[tool.uv]
+no-binary-package = ["pyyaml"]

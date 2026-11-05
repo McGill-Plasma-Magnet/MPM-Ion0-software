@@ -11,7 +11,7 @@
 #include "thermistor.h"
 #include "hdc2080.h"
 
-#define DIR_PATH "/home/debian/logs/"
+#define DIR_PATH "/home/cubesat/logs/"
 #define DATA_BUF 8192
 
 char setupLogs();

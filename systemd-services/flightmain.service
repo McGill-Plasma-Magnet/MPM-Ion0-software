@@ -1,14 +1,13 @@
 [Unit]
-Description=Misson software service
+Description=Ion0 OLAF Main Application
+After=network.target
 
 [Service]
 Type=simple
-Restart=on-failure
+WorkingDirectory=%h/MPM-Ion0-software/Ion
+ExecStart=/usr/bin/uv run %h/MPM-Ion0-software/Ion/src/ion/main.py
+Restart=always
 RestartSec=2
-ExecStartPre=/bin/bash -c 'echo 0 > /home/debian/logs/state.txt'
-ExecStart=/home/debian/MPM-Ion0-software/Ion/bin/flightmain
-StandardOutput=append:/home/debian/logs/flightlog.log
-StandardError=append:/home/debian/logs/flightlog.log
 
 [Install]
 WantedBy=multi-user.target

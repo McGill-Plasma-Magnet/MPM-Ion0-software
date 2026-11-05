@@ -1,2 +1,3 @@
 # MPM-Ion0-software
-software for first Ion flight
+Software for second Ion HAB flight, building off first flight software.
+>*See Ion/README.md for more information.*
