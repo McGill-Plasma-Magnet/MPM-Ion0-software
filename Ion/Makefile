@@ -86,7 +86,7 @@ verify-yaml:
 ion-fresh: setup-deps clean
 	$(MAKE) run
 	@echo "Forcing PyYAML rebuild to ensure bindings..."
-	uv pip install --no-cache-dir --no-binary=pyyaml --force-reinstall pyyaml
+	uv pip install --force-reinstall --no-cache-dir --no-binary=pyyaml pyyaml
 	$(MAKE) verify-yaml
 
 run-ex:
