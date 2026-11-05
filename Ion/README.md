@@ -31,3 +31,14 @@ Otherwise, to rebuild from scratch and run:
 ```
 make ion-fresh
 ```
+
+### Systemd Service Management
+To install and activate all required systemd services (including the OLAF main app and telemetry services) on the embedded system, run:
+```
+make install-services
+```
+
+To remove the services and clean up the system:
+```
+make uninstall-services
+```

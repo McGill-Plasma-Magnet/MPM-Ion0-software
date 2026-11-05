@@ -4,6 +4,7 @@ CFLAGS := -Wall -Wextra -Wpedantic -std=c11 -Ilib
 LDFLAGS :=
 LDLIBS := -lm -lgpiod
 
+SERVICES := batteryheater logsmain
 SRC_DIR := src/ion/services
 LIB_DIR := src/ion/lib
 EXAMPLE_DIR := examples
@@ -79,3 +80,26 @@ ion-fresh: clean
 
 run-ex:
 	./.run_example.sh $(ex)
+
+.PHONY: install-services uninstall-services
+
+install-services:
+	@echo "Installing systemd services..."
+	@for service in $(SERVICES); do \
+		sudo cp systemd-services/$$service.service /etc/systemd/system/; \
+	done
+	sudo systemctl daemon-reload
+	@for service in $(SERVICES); do \
+		sudo systemctl enable $$service; \
+		sudo systemctl restart $$service; \
+	done
+	@echo "Services installed and started."
+
+uninstall-services:
+	@for service in $(SERVICES); do \
+		sudo systemctl stop $$service; \
+		sudo systemctl disable $$service; \
+		sudo rm -f /etc/systemd/system/$$service.service; \
+	done
+	sudo systemctl daemon-reload
+	@echo "Services removed."
