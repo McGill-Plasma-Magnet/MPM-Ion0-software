@@ -1,4 +1,4 @@
-from gps import *
+from lib.gps import *
 
 with GnssDriver(bus=1) as gnss:
     gnss.configure()

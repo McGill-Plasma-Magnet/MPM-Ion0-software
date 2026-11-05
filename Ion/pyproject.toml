@@ -1,0 +1,23 @@
+[project]
+name = "ion"
+version = "0.1.0"
+description = "Add your description here"
+readme = "../README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "oresat-olaf>=3.7.4",
+    "pynmeagps==1.1.8",
+    "pyrtcm==1.2.1",
+    "pyubx2==1.4.1",
+    "smbus3==0.5.5",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "lib"
+# root of my module is not in src/ but rather straight in project root
+module-root = ""
+namespace = true
