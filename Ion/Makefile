@@ -78,4 +78,4 @@ ion-fresh: clean
 	$(MAKE) run
 
 run-ex:
-	./run_example.sh $(ex)
+	./.run_example.sh $(ex)
