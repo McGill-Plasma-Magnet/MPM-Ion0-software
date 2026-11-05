@@ -83,10 +83,10 @@ verify-yaml:
 	@echo "Verifying PyYAML C-bindings..."
 	uv run python -c "import yaml; print('SUCCESS: CLoader found' if hasattr(yaml, 'CLoader') else 'FAILURE: Pure-python YAML installed')"
 
-ion-fresh: clean setup-deps
+ion-fresh: setup-deps clean
 	$(MAKE) run
 	@echo "Forcing PyYAML rebuild to ensure bindings..."
-	uv pip install --no-cache-dir --force-reinstall pyyaml
+	uv pip install --no-cache-dir --no-binary=pyyaml --force-reinstall pyyaml
 	$(MAKE) verify-yaml
 
 run-ex:
