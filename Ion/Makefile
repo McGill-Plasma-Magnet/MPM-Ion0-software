@@ -4,8 +4,8 @@ CFLAGS := -Wall -Wextra -Wpedantic -std=c11 -Ilib
 LDFLAGS :=
 LDLIBS := -lm -lgpiod
 
-SRC_DIR := src
-LIB_DIR := lib
+SRC_DIR := src/ion/services
+LIB_DIR := src/ion/lib
 EXAMPLE_DIR := examples
 BUILD_DIR := build
 BIN_DIR := bin
@@ -28,7 +28,7 @@ LOGS_OBJ := $(BUILD_DIR)/logsmain.o
 EXAMPLE_SRCS := $(wildcard $(EXAMPLE_DIR)/*.c)
 EXAMPLE_BINS := $(patsubst $(EXAMPLE_DIR)/%.c,$(BIN_DIR)/%,$(EXAMPLE_SRCS))
 
-.PHONY: all clean rebuild examples directories run ion-fresh
+.PHONY: all clean rebuild examples directories run ion-fresh run-ex
 
 all: directories \
 	$(BIN_DIR)/flightmain \
@@ -53,7 +53,7 @@ $(BUILD_DIR)/%.o: $(LIB_DIR)/%.c
 	@mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-examples: directories $(EXAMPLE_BINS)
+examples: directories $(LIB_OBJS) $(EXAMPLE_BINS)
 
 $(BIN_DIR)/%: $(EXAMPLE_DIR)/%.c $(LIB_OBJS)
 	$(CC) $(CFLAGS) $< $(LIB_OBJS) $(LDFLAGS) $(LDLIBS) -o $@
@@ -66,7 +66,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 	rm -f $(BIN_DIR)/*
 	rm -rf .venv
-	rm -rf build dist *.egg-info
+	rm -rf dist *.egg-info
 
 rebuild: clean all
 
@@ -76,3 +76,6 @@ run:
 
 ion-fresh: clean
 	$(MAKE) run
+
+run-ex:
+	./run_example.sh $(ex)

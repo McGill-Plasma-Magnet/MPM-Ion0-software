@@ -1,4 +1,4 @@
-from lib.gps import *
+from ion.lib.gps import *
 
 with GnssDriver(bus=1) as gnss:
     gnss.configure()
