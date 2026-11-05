@@ -38,7 +38,7 @@ _CFG_VALSET = (0x06, 0x8A)  # (class, id) of UBX-CFG-VALSET, used to match its A
 
 
 class I2CBus(Protocol):
-    """Structural type for the I2C bus: anything with ``i2c_rdwr`` (e.g. ``smbus3.SMBus`` or a mock)."""
+    """Structural type for the I2C bus: anything with i2c_rdwr (e.g. smbus3.SMBus or a mock)."""
 
     def i2c_rdwr(self, *i2c_msgs: i2c_msg) -> None: ...
 
@@ -109,7 +109,7 @@ class _DdcStream:
         return int.from_bytes(bytes(count), "big")
 
     def read(self, n: int) -> bytes:
-        """Return exactly ``n`` bytes, or fewer if the module stays silent for ``timeout`` s.
+        """Return exactly n bytes, or fewer if the module stays silent for timeout s.
 
         A short (or empty) result is how pyubx2 detects end-of-stream, so a quiet module
         surfaces as "no message" rather than blocking forever.
@@ -132,7 +132,7 @@ class _DdcStream:
             self._bus.i2c_rdwr(i2c_msg.write(self._addr, list(data[i:i + _CHUNK])))
 
     def _fetch(self, n: int) -> None:
-        """Pop ``n`` bytes from the module into the local buffer."""
+        """Pop n bytes from the module into the local buffer."""
         data = i2c_msg.read(self._addr, n)
         self._bus.i2c_rdwr(i2c_msg.write(self._addr, [_REG_STREAM]), data)
         self._buf += bytes(data)
@@ -141,18 +141,18 @@ class _DdcStream:
 class GnssDriver:
     """UBX driver for a MAX-M10S on I2C. Must be used as a context manager.
 
-    The bus is only opened in ``__enter__`` and released in ``__exit__``. If a bus
+    The bus is only opened in __enter__ and released in __exit__. If a bus
     *object* is passed in, the caller keeps ownership and it is not closed here.
     """
 
     def __init__(self, bus: int | I2CBus = 1, address: int = _ADDR,
                  timeout: float = 2.0, poll_s: float = 0.01) -> None:
-        """Store settings; no hardware is touched until ``__enter__``.
+        """Store settings; no hardware is touched until __enter__.
 
         Args:
-            bus: I2C bus number (1 for /dev/i2c-1) or an object satisfying ``I2CBus``.
+            bus: I2C bus number (1 for /dev/i2c-1) or an object satisfying I2CBus.
             address: 7-bit I2C address of the module.
-            timeout: Seconds without data before a ``read_*`` call gives up.
+            timeout: Seconds without data before a read_* call gives up.
             poll_s: Sleep between polls while the module has nothing to send.
         """
         self._bus_arg, self._addr, self._timeout, self._poll_s = bus, address, timeout, poll_s
@@ -182,19 +182,20 @@ class GnssDriver:
         return self._stream, self._reader
 
     def configure(self, rate_ms: int = 1000, messages: Sequence[str] = ("NAV_PVT", "NAV_SAT"),
-                  layers: int = SET_LAYER_RAM) -> None:
+                  layers: int = SET_LAYER_RAM, custom_settings: Sequence[tuple[str, int]] | None = None) -> None:
         """Configure the module with UBX-CFG-VALSET and wait for its acknowledgement.
-
+        
         Turns NMEA off and UBX on for the DDC port, sets the measurement period, and
         enables the requested periodic UBX messages (one per navigation epoch).
-
+        
         Args:
             rate_ms: Measurement period in ms (1000 = 1 Hz).
             messages: UBX message names as used in u-blox config keys, e.g. "NAV_PVT",
-                "NAV_SAT", "NAV_DOP". "NAV_PVT" is required for ``read_fix``.
-            layers: pyubx2 ``SET_LAYER_*`` flags (OR-able). RAM is lost on power cycle;
-                add ``SET_LAYER_BBR`` to persist while the backup supply is present.
-
+                "NAV_SAT", "NAV_DOP". "NAV_PVT" is required for read_fix.
+            layers: pyubx2 SET_LAYER_* flags (OR-able). RAM is lost on power cycle;
+                add SET_LAYER_BBR to persist while the backup supply is present.
+            custom_settings: Optional list of (key, value) tuples for additional configuration.
+        
         Raises:
             GnssConfigError: The module rejected the command (UBX-ACK-NAK).
             TimeoutError: No acknowledgement arrived in time.
@@ -203,11 +204,13 @@ class GnssDriver:
         stream, _ = self._open()
         settings = [("CFG_I2COUTPROT_NMEA", 0), ("CFG_I2COUTPROT_UBX", 1), ("CFG_RATE_MEAS", rate_ms)]
         settings += [(f"CFG_MSGOUT_UBX_{name}_I2C", 1) for name in messages]
+        if custom_settings:
+            settings += custom_settings
         stream.write(UBXMessage.config_set(layers, TXN_NONE, settings).serialize())
         self._wait_ack(*_CFG_VALSET)
 
     def read_message(self) -> UBXMessage | None:
-        """Return the next UBX message (check ``.identity``, e.g. "NAV-SAT"), or None on timeout.
+        """Return the next UBX message (check .identity, e.g. "NAV-SAT"), or None on timeout.
 
         Use this for the full GNSS data set (satellite info, DOP, ...). Malformed frames
         are logged and skipped by pyubx2. Raises OSError on I2C failure.
@@ -217,10 +220,10 @@ class GnssDriver:
         return msg if isinstance(msg, UBXMessage) else None
 
     def read_fix(self) -> GnssFix | None:
-        """Return the next position fix, or None if no NAV-PVT arrives within ``timeout``.
+        """Return the next position fix, or None if no NAV-PVT arrives within timeout.
 
         Other message types received in the meantime are discarded; use
-        ``read_message`` if you need them. Raises OSError on I2C failure.
+        read_message if you need them. Raises OSError on I2C failure.
         """
         deadline = time.monotonic() + self._timeout
         while time.monotonic() < deadline:
