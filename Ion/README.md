@@ -1,12 +1,6 @@
 # Ion
 Software for second Ion HAB flight, building off first flight software.
 
-## Changes
-* added Python GNSS module driver
-* project build managed by uv
-* main loop switched over to Python using OLAF
-* GPS logs kept separately (***TO DO***)
-
 ## Installation and setup
 Go to the Ion directory.
 
@@ -30,6 +24,24 @@ make run
 Otherwise, to rebuild from scratch and run:
 ```
 make ion-fresh
+```
+
+### Development and Maintenance
+To install system requirements (like `libyaml-dev`):
+```
+make setup-deps
+```
+
+To ensure PyYAML C-bindings are correctly installed for performance:
+```
+make verify-yaml
+```
+
+> Note: OLAF requires PyYAML with C-bindings for optimal performance. If `make verify-yaml` fails, use `make ion-fresh` to force a rebuild.
+
+To remove build artifacts and the virtual environment:
+```
+make clean
 ```
 
 ### Systemd Service Management
