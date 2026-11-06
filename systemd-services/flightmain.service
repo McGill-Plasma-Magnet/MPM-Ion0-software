@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=%h/MPM-Ion0-software/Ion
-ExecStart=/usr/bin/uv run %h/MPM-Ion0-software/Ion/src/ion/main.py
+WorkingDirectory=/home/cubesat/MPM-Ion0-software/Ion
+ExecStart=/home/cubesat/.local/bin/uv run /home/cubesat/MPM-Ion0-software/Ion/src/ion/main.py
 Restart=always
 RestartSec=2
 

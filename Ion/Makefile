@@ -4,7 +4,7 @@ CFLAGS := -Wall -Wextra -Wpedantic -std=c11 -Ilib
 LDFLAGS :=
 LDLIBS := -lm -lgpiod
 
-SERVICES := batteryheater logsmain
+SERVICES := batteryheater logsmain flightmain
 SRC_DIR := src/ion/services
 LIB_DIR := src/ion/lib
 EXAMPLE_DIR := examples
@@ -97,7 +97,7 @@ run-ex:
 install-services:
 	@echo "Installing systemd services..."
 	@for service in $(SERVICES); do \
-		sudo cp systemd-services/$$service.service /etc/systemd/system/; \
+		sudo cp ../systemd-services/$$service.service /etc/systemd/system/; \
 	done
 	sudo systemctl daemon-reload
 	@for service in $(SERVICES); do \
